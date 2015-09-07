@@ -15,7 +15,7 @@ public class InventoryState {
 	}
 	
 	public bool Contains(InventoryState _i){
-		return this.inventory.Contains(_i.inventory);
+		return (_i.baseState == this.baseState) && this.inventory.Contains(_i.inventory);
 	}
 	
 	

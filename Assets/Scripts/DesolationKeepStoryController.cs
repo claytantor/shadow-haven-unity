@@ -20,7 +20,7 @@ public class DesolationKeepStoryController : MonoBehaviour {
 	
 	void Awake(){
 		
-		// @TODO this should have a fake player on game mode
+		//create fake player object if not in game
 		playerGameObject = GameObject.Find("/PlayerGameObject");
 		if(playerGameObject != null){
 			playerManager = playerGameObject.GetComponent<PlayerManger>();
@@ -29,6 +29,16 @@ public class DesolationKeepStoryController : MonoBehaviour {
 			playerManager = playerGameObject.AddComponent<PlayerManger>();
 		}					
 		audioSource = GetComponent<AudioSource>();
+		
+		//rules for states
+		//if you open the hidden box with the key, then set state to HiddenBox1
+		PlayerInventoryStateRule keyBoxRule1 = 
+			new PlayerInventoryStateRule(new InventoryState("key0,","HiddenBox0"), "HiddenBox1");
+		playerStateRuleEngine.Add(keyBoxRule1);
+		//if you have a key you can open the door
+		PlayerInventoryStateRule keyDoorRule1 = 
+			new PlayerInventoryStateRule(new InventoryState("key0,","Door0"), "Door1");	
+		playerStateRuleEngine.Add(keyDoorRule1);
 		
 	}
 	
@@ -148,7 +158,7 @@ public class DesolationKeepStoryController : MonoBehaviour {
 	
 	IEnumerator TakeKey0 () {
 		
-		playerManager.AddInventory("key1");
+		playerManager.AddInventory("key0");
 		
 		description = "As your hand reaches into the box the key starts to glow blue from within and "+
 			"you hear an audible whine as if the key has resonate vibarations. The closer your hand moves the higher the pitch of the sickening sound. "+
@@ -164,27 +174,29 @@ public class DesolationKeepStoryController : MonoBehaviour {
 		}			
 	
 	}
-	
+
 	IEnumerator Door0 () {
-		description = "You insert the key into the lock. It opens."+
-			"\n\rPress (E) to leave this fetid place.";;
-		keys = new KeyCode[] {KeyCode.C, KeyCode.E };
-		states = new string[] { "CellStart", "ExitCell" };	
-		while (state == State.Door0) {
-			yield return 0;
-		}			
-	}
-	
-	IEnumerator Door1 () {
 		description = "The lock is strong, you cant open it without the key. "+
 			"\n\rPress (C) to stop wasting time on the lock.";
 		
 		keys = new KeyCode[] {KeyCode.C };
 		states = new string[] { "CellStart" };	
-		while (state == State.Door1) {
+		while (state == State.Door0) {
 			yield return 0;
 		}	
 	}
+		
+	IEnumerator Door1 () {
+		description = "You insert the key into the lock. It opens."+
+			"\n\rPress (E) to leave this fetid place.";;
+		keys = new KeyCode[] {KeyCode.C, KeyCode.E };
+		states = new string[] { "CellStart", "ExitCell" };	
+		while (state == State.Door1) {
+			yield return 0;
+		}			
+	}
+	
+
 	
 	IEnumerator ExitCell0 () {
 		state = State.ExitCell0;
