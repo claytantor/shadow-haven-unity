@@ -1,0 +1,11 @@
+Library/
+Library/*
+Temp/
+Temp/*
+Assembly-CSharp-vs.csproj
+Assembly-CSharp.csproj
+ProjectSettings/
+break_hollows.app/
+escape-csharp.sln
+escape.sln
+escape.userprefs
