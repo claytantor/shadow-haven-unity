@@ -11,3 +11,5 @@ escape.sln
 escape.userprefs
 shadow-haven-unity-csharp.sln
 shadow-haven-unity.sln
+*.meta
+

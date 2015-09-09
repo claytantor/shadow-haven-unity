@@ -1,0 +1,67 @@
+{
+	"states":[
+		{
+			"name":"SceneStart0",
+			"description":"You wake up in a room of unknown composition approx 2m x 3m long. You remember nothing except for your name. This room is confined and frantic writings can be seen on the wall. You don’t know why you are depressed and sad, going to bed would be easier than facing your dilemma. The bed was moved hastily, there are marks on the floor. A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.",			
+			"keys":[
+				{ 
+					"keycode":"b", 
+					"description":"Go Back To Bed", 
+					"state":"GotoBed" },
+				{ 
+					"keycode":"l", 
+					"description":"Look At The Mirror", 
+					"state":"MirrorView" },
+				{ 
+					"keycode":"u", 
+					"description":"Look Under The Bed", 
+					"state":"UnderBed" }			
+			]
+		},
+		{
+			"name":"GotoBed0",
+			"description":"The bed feels soft, but you can't shake a cold feeling. You feel terrible and sad. Something has come over you and there are waves of guilt and self hatred you find it hard to shake. Sleeping doesn’t help, the more you stay in bed the more tired you feel."
+		},
+		{
+			"name":"MirrorView0",
+			"description":"You look at yourself in the mirror. You don’t look normal, the person there seems like a different version of yourself. An empty stare looks back at you and you feel contempt and disgust for the doppleganger that lives on the other side of this silver glass."
+		},	
+		{
+			"name":"UnderBed0",
+			"description":"The bed is not sturdy or made well, and moving it makes a sound as though it has been moved many times and is now loose in the joints. As you move it you see a small hole in the floor that contains a metallic box about the size of a shoe box. There is a crumpled note sitting beside it."
+		},	
+		{
+			"name":"UnderBed1",
+			"description":"Because you moved the hole in the floor is in plain sight, whoever hid the box here must have been in a very poor mental state to think it would hide anything. You can’t shake and eerie feeling of deja vu that makes you uncomfortable."
+		},	
+		{
+			"name":"HiddenBox0",
+			"description":"The box almost seems alive as you pass your fingers over. Radiating in blue a small glyphic character on the top of a foreign language which confuses. As you open it inside the box is a shimmering key made of material you can’t quite identify. It feels warm to the touch and vibrates slightly, as if it has its own power source. There is a crumpled note in the box."
+		},	
+		{
+			"name":"HiddenBox1",
+			"description":"The box's color has changed to a graphite grey and it feels cold, no writing is now visible at all. It seems to have become quiet and deactivated."
+		},	
+		{
+			"name":"TakeKey0",
+			"description":"The bed feels soft, but you can't shake a cold feeling. You feel terrible and sad. Something has come over you and there are waves of guilt and self hatred you find it hard to shake. Sleeping doesn’t help, the more you stay in bed the more tired you feel. 
+"
+		},	
+		{
+			"name":"ReadNote0",
+			"description":"As you un-crumple the note you start to recognize the writing as the same on the walls. The scribbled writing looks it was written by a madman: “SLEEP DO NOT CREEP WITH SEETHING FEAR. THEIR ABOMINATION WILL BREAK YOU, DO NOT TRY AGAIN YOU FOOL! IT IS BETTER TO NOT KNOW. TO BE TAKEN IS A CRUEL FATE UNFATHOMABLE AND THE HORROR OF KNOWING WILL CONSUME YOU WITH MADNESS. THE WORM’S MILK IS THE ONLY WAY BACK. THEIR CRUEL DARKNESS IS BOUNDLESS. NEVER FORGET THAT IF THE CROWS SEE YOU THEN THEY WILL HAVE YOU.”. You put the note in your pocket. The metallic box is still sitting in hole."
+		},	
+		{
+			"name":"Door0",
+			"description":"The door is very old and mold and slime can be seen growing on it from years of neglect. Scratches for insane fingers willing to loose their skin and nails cover the inside. A small hole shows an outside corridor that is dimly lit from an alien phosphorescent glow. The lock is strong and is not human in its technology, but not sophisticated either. You can’t open it without the key."
+		},	
+		{
+			"name":"Door1",
+			"description":"You slowly insert the key into the strange lock. As the tumblers turn the key begins to whine and vibrate with a sickening hum. Its song makes you feel weak and afraid of what may lay on the other side of the rotting door. The door opens with little effort regrettably, you wish there was more resistance to resist what now seems to be your fate. As you remove the key the whine dims and all you are left with is the reality that you must venture forward."
+		},	
+		{
+			"name":"SceneExit0",
+			"description":"You have escaped."
+		},												
+	]
+}
