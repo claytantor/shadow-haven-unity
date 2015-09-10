@@ -25,6 +25,7 @@ public class Scene1Controller : MonoBehaviour {
 		var dict = JSON.Parse(scene1Json.text);
 		this.states = dict["states"].AsArray;
 		
+		
 		//create fake player object if not in game
 		playerGameObject = GameObject.Find("/PlayerGameObject");
 		if(playerGameObject != null){
@@ -33,17 +34,30 @@ public class Scene1Controller : MonoBehaviour {
 			playerGameObject = GameObject.Find("/SceneGameObject");
 			playerManager = playerGameObject.AddComponent<PlayerManger>();
 		}					
-		
-		//rules for states
-		//if you open the hidden box with the key, then set state to HiddenBox1
-		PlayerInventoryStateRule keyBoxRule1 = 
-			new PlayerInventoryStateRule(new InventoryState("key0,","HiddenBox0"), "HiddenBox1");
-		playerStateRuleEngine.Add(keyBoxRule1);
-		//if you have a key you can open the door
-		PlayerInventoryStateRule keyDoorRule1 = 
-			new PlayerInventoryStateRule(new InventoryState("key0,","Door0"), "Door1");	
-		playerStateRuleEngine.Add(keyDoorRule1);
-		
+
+		//load the rules
+		var rulesArray = dict["rules"].AsArray;
+		foreach(JSONNode ruleNode in rulesArray){
+			string ruletype = ruleNode["type"];
+			
+			if(ruletype.Equals("PlayerInventoryStateRule")){
+				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
+				string[] iA = new string[inventoryJson.Count];
+				
+				int index = 0;
+				foreach(JSONNode item in inventoryJson){
+					iA[index] = (string)item;
+					index+=1;
+				}
+						
+				string baseState = ruleNode["baseState"];
+				string resultState = ruleNode["resultState"];
+				playerStateRuleEngine.Add(
+					new PlayerInventoryStateRule(
+						new InventoryState(iA,baseState), resultState));
+			}
+		}				
+								
 	}
 	
 	void Start () {	
@@ -73,6 +87,7 @@ public class Scene1Controller : MonoBehaviour {
 		MirrorView0,
 		UnderBed0,
 		UnderBed1,
+		UnderBed2,
 		HiddenBox0,
 		HiddenBox1,
 		TakeKey0,
@@ -96,8 +111,7 @@ public class Scene1Controller : MonoBehaviour {
 		
 	}
 	
-	IEnumerator GotoBed0 () {
-		
+	IEnumerator GotoBed0 () {		
 		JSONNode state = FindState("GotoBed0",this.states);		
 		description = state["description"];
 		MakeKeyListJson(state["keys"].AsArray);
@@ -110,7 +124,7 @@ public class Scene1Controller : MonoBehaviour {
 	IEnumerator MirrorView0 () {
 		JSONNode state = FindState("MirrorView0",this.states);		
 		description = state["description"];
-		MakeKeyListJson(state["keys"].AsArray);		
+		MakeKeyListJson(state["keys"].AsArray);	
 		
 		while (state == State.MirrorView0) {
 			yield return 0;
@@ -120,7 +134,7 @@ public class Scene1Controller : MonoBehaviour {
 	IEnumerator UnderBed0 () {
 		JSONNode state = FindState("UnderBed0",this.states);		
 		description = state["description"];
-		MakeKeyListJson(state["keys"].AsArray);		
+		MakeKeyListJson(state["keys"].AsArray);	
 		
 		while (state == State.UnderBed0) {
 			yield return 0;
@@ -136,11 +150,21 @@ public class Scene1Controller : MonoBehaviour {
 			yield return 0;
 		}		
 	}
-	
+
+	IEnumerator UnderBed2 () {
+		JSONNode state = FindState("UnderBed2",this.states);		
+		description = state["description"];
+		MakeKeyListJson(state["keys"].AsArray);	
+		
+		while (state == State.UnderBed2) {
+			yield return 0;
+		}		
+	}	
+			
 	IEnumerator HiddenBox0 () {
 		JSONNode state = FindState("HiddenBox0",this.states);		
 		description = state["description"];
-		MakeKeyListJson(state["keys"].AsArray);			
+		MakeKeyListJson(state["keys"].AsArray);		
 		
 		while (state == State.HiddenBox0) {
 			yield return 0;
@@ -157,14 +181,25 @@ public class Scene1Controller : MonoBehaviour {
 		}
 	}
 	
+	IEnumerator ReadNote0 () {
+		JSONNode state = FindState("ReadNote0",this.states);		
+		description = state["description"];
+		MakeKeyListJson(state["keys"].AsArray);	
+		AddInventoryForState(state);			
+		
+		while (state == State.ReadNote0) {
+			yield return 0;
+		}
+	}	
 	
 	IEnumerator TakeKey0 () {
 		
-		playerManager.AddInventory("key0");
+		//playerManager.AddInventory("key0");
 		
 		JSONNode state = FindState("TakeKey0",this.states);		
 		description = state["description"];		
 		MakeKeyListJson(state["keys"].AsArray);
+		AddInventoryForState(state);		
 								
 		while (state == State.TakeKey0) {
 			yield return 0;
@@ -185,7 +220,7 @@ public class Scene1Controller : MonoBehaviour {
 	
 	IEnumerator Door1 () {
 
-		JSONNode state = FindState("Door0",this.states);		
+		JSONNode state = FindState("Door1",this.states);		
 		description = state["description"];	
 		MakeKeyListJson(state["keys"].AsArray);
 			
@@ -208,7 +243,7 @@ public class Scene1Controller : MonoBehaviour {
 		int i =0;
 		keys = new KeyDescription[keyArray.Count];
 		foreach(JSONNode key in keyArray){
-			Debug.Log(key);			
+			//Debug.Log(key);			
 			string keycode = key["keycode"];
 			string description = key["description"];
 			string state = key["state"];
@@ -226,10 +261,11 @@ public class Scene1Controller : MonoBehaviour {
 		return result;
 	}
 	
+//	string ModifyPlayerState(JSONNode factors){
+//		
+//	}
+	
 	JSONNode FindState(string name, JSONArray states){
-		Debug.Log("FindState:"+name);
-		
-		
 		foreach(JSONNode state in states){
 			string nameval = state["name"];
 			if(nameval.Equals(name)){				
@@ -240,17 +276,35 @@ public class Scene1Controller : MonoBehaviour {
 		return null;
 	}
 	
+	void AddInventoryForState(JSONNode state){
+		Debug.Log(state["inventory"]);
+		if(state["inventory"] != null){
+			JSONArray itemsL = state["inventory"].AsArray;
+			foreach(JSONNode itemNode in itemsL){
+				Debug.Log((string)itemNode);
+				playerManager.AddInventory((string)itemNode);
+			}		
+		}
+	}
+	
 	void SetState (string stateBaseName) {
-		string methodName = stateBaseName+"0";
+	
+		Debug.Log("base state: " + stateBaseName);
+				
+		var inventoryStateActual = 
+			new InventoryState(
+				playerManager.inventory.ToArray(), stateBaseName);
 		
-		var inventoryStateActual = new InventoryState(playerManager.inventoryList,methodName);
 		playerStateRuleEngine.ActualValue = inventoryStateActual;
-		
+				
 		// Get the result
 		var resultStates = playerStateRuleEngine.Matches();
+		Debug.Log("matched rule count: " + resultStates.ToArray().Length);
 		
+		//make the default state
+		string methodName = stateBaseName+"0";
 		if(resultStates.ToArray().Length>0){
-			foreach(PlayerInventoryStateRule rule in resultStates){	
+			foreach(PlayerInventoryStateRule rule in resultStates){
 				methodName = rule.GetState(stateBaseName);		
 			}
 		} 

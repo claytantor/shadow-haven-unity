@@ -25,7 +25,7 @@ namespace Rules
 		public override bool IsSatisfied
 		{
 			get {			
-				return Value.Contains(Threshold); 
+				return Value.ContainsAll(Threshold); 
 			}
 		}
 		

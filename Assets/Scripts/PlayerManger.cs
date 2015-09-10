@@ -14,11 +14,12 @@ public class PlayerManger : MonoBehaviour {
 	public int fear = 0;
 	
 	public List<string> inventory = new List<string>();
-	public string inventoryList;
+	//public string inventoryList;
 
 	
 	void Awake() {
 		DontDestroyOnLoad(playerGameObject);
+		//inventoryList = "";
 	}
 
 	// Use this for initialization
@@ -33,10 +34,10 @@ public class PlayerManger : MonoBehaviour {
 	
 	public void AddInventory(string item){
 		inventory.Add(item);
-		foreach(string itemInv in inventory)
-		{
-			inventoryList = itemInv+",";
-		}
+//		foreach(string itemInv in inventory)
+//		{
+//			inventoryList = itemInv+",";
+//		}
 	}
 	
 	public void SetReaction(int[] reactions){
