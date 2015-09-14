@@ -1,139 +1,249 @@
 {
+	"sceneInfo":{
+		"name":"despair Awakens"
+	},
 	"rules":[
 		{
-			"type":"PlayerInventoryStateRule",
+			"type":"PlayerInventoryAllStateRule",
 			"inventory":["key0"],
 			"baseState":"HiddenBox",
 			"resultState":"HiddenBox1"
 		},		
 		{
-			"type":"PlayerInventoryStateRule",
-			"inventory":["key0"],
+			"type":"PlayerInventoryAllStateRule",
+			"inventory":["start0","movebed0","key0"],
 			"baseState":"Door",
 			"resultState":"Door1"
 		},
 		{
-			"type":"PlayerInventoryStateRule",
-			"inventory":["note0"],
+			"type":"PlayerInventoryAnyStateRule",
+			"inventory":["key0"],
+			"baseState":"Door",
+			"resultState":"Door1"
+		},		
+		{
+			"type":"PlayerInventoryAllStateRule",
+			"inventory":["start0","movebed0"],
+			"baseState":"UnderBed",
+			"resultState":"UnderBed1"
+		},		
+		{
+			"type":"PlayerInventoryAllStateRule",
+			"inventory":["start0","movebed0","note0"],
 			"baseState":"UnderBed",
 			"resultState":"UnderBed2"
-		}			
+		},	
+		{
+			"type":"PlayerInventoryAllStateRule",
+			"inventory":["start0"],
+			"baseState":"SceneStart",
+			"resultState":"SceneStart1"
+		},
+		{
+			"type":"PlayerInventoryAllStateRule",
+			"inventory":["start0","movebed0"],
+			"baseState":"SceneStart",
+			"resultState":"SceneStart2"
+		}						
 	],
 	"states":[
 		{
 			"name":"SceneStart0",
-			"description":"You wake up in a room of unknown composition approx 2m x 3m long. You remember nothing except for your name. This room is confined and frantic writings can be seen on the wall. You don’t know why you are depressed and sad, going to bed would be easier than facing your dilemma. The bed was moved hastily, there are marks on the floor. A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.",	
+			"description":"You wake up in a room of unknown composition approx 2m x 3m long. You remember nothing except for your name. This room is confined and frantic writings can be seen on the wall. You don’t know why you are depressed and sad, going to bed would be easier than facing your dilemma. The bed was moved hastily, there are marks on the floor. A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.\r\nLumbersexual cardigan dreamcatcher paleo Marfa. Drinking vinegar Tumblr fashion axe Etsy, occupy Shoreditch Austin before they sold out typewriter VHS taxidermy meggings forage 8-bit Marfa. Umami Blue Bottle artisan readymade gluten-free hella. Umami street art quinoa butcher Williamsburg. Ethical forage taxidermy, migas fap bicycle rights kogi. Mumblecore twee church-key, mlkshk dreamcatcher yr Intelligentsia drinking vinegar authentic Pinterest mustache hella. Small batch Schlitz blog hashtag.",	
 			"factors":{
-				"fear":1,
-				"anger":1,
-				"dispair":1
+				"fear":0,
+				"anger":0,
+				"despair":0
 			},		
 			"keys":[
 				{ 
-					"keycode":"b", 
-					"description":"Escape The Pain With Sleep", 
+					"keycode":"a", 
+					"buttonId":"button0", 
+					"description":"Escape The Pain", 
 					"state":"GotoBed" },
 				{ 
-					"keycode":"m", 
-					"description":"Face Yourself  In The Mirror", 
+					"keycode":"s", 
+					"buttonId":"button1", 
+					"description":"Face Yourself", 
 					"state":"MirrorView" },
 				{ 
 					"keycode":"d", 
+					"buttonId":"button2", 
 					"description":"Open The Door", 
 					"state":"Door" },
 				{ 
-					"keycode":"u", 
+					"keycode":"f", 
+					"buttonId":"button3", 
 					"description":"Move The Bed", 
 					"state":"UnderBed" }			
 			]
 		},
 		{
+			"name":"SceneStart1",
+			"description":"You are in a room of unknown composition approx 2m x 3m long.  A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. You can tell that someone previously moved the bed hastily, there are marks on the floor. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.",	
+			"factors":{
+				"fear":0,
+				"anger":0,
+				"despair":1
+			},		
+			"keys":[
+				{ 
+					"keycode":"a", 
+					"buttonId":"button0", 
+					"description":"Escape The Pain", 
+					"state":"GotoBed" },
+				{ 
+					"keycode":"s", 
+					"buttonId":"button1", 
+					"description":"Face Yourself", 
+					"state":"MirrorView" },
+				{ 
+					"keycode":"d", 
+					"buttonId":"button2", 
+					"description":"Open The Door", 
+					"state":"Door" },
+				{ 
+					"keycode":"f", 
+					"buttonId":"button3", 
+					"description":"Move The Bed", 
+					"state":"UnderBed" }		
+			]
+		},
+		{
+			"name":"SceneStart2",
+			"description":"You are in a room of unknown composition approx 2m x 3m long.  A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. When you moved the bed it exposed a small hole in the floor. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.",	
+			"factors":{
+				"fear":0,
+				"anger":0,
+				"despair":1
+			},		
+			"keys":[
+				{ 
+					"keycode":"a", 
+					"buttonId":"button0", 
+					"description":"Escape The Pain", 
+					"state":"GotoBed" },
+				{ 
+					"keycode":"s", 
+					"buttonId":"button1", 
+					"description":"Face Yourself", 
+					"state":"MirrorView" },
+				{ 
+					"keycode":"d", 
+					"buttonId":"button2", 
+					"description":"Open The Door", 
+					"state":"Door" },
+				{ 
+					"keycode":"f", 
+					"buttonId":"button3", 
+					"description":"Move The Bed", 
+					"state":"UnderBed" }		
+			]
+		},
+		{
 			"name":"GotoBed0",
 			"description":"The bed feels soft, but you can't shake a cold feeling. You feel terrible and sad. Something has come over you and there are waves of guilt and self hatred you find it hard to shake. Sleeping doesn’t help, the more you stay in bed the more tired you feel.",	
+			"inventory":["start0"],
 			"factors":{
-				"fear":1,
-				"anger":1,
-				"dispair":1
+				"fear":0,
+				"anger":0,
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Pull Yourself Out Of Bed", 
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Get Out Of Bed", 
 					"state":"SceneStart" }]
 		},
 		{
 			"name":"MirrorView0",
-			"description":"You look at yourself in the mirror. You don’t look normal, the person there seems like a different version of yourself. An empty stare looks back at you and you feel contempt and disgust for the doppleganger that lives on the other side of this silver glass.",	
+			"description":"You look at yourself in the mirror. You don’t look normal, the person there seems like a different version of yourself. Your nose feels longer and sharper than it should and your eyes are dark and beedy like a bird’s souless glare. You dark hear almost looks of oily feathers. As that empty stare looks back at you and you feel contempt and disgust for the doppleganger that lives on the other side of this silver glass.",
+			"inventory":["start0"],	
 			"factors":{
-				"fear":1,
-				"anger":1,
-				"dispair":1
+				"fear":0,
+				"anger":2,
+				"despair":0
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Put The Mirror Back In Disgust", 
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Put Mirror Back", 
 					"state":"SceneStart" }]
 		},	
 		{
 			"name":"UnderBed0",
-			"description":"The bed is not sturdy or made well, and moving it makes a sound as though it has been moved many times and is now loose in the joints. As you move it you see a small hole in the floor that contains a metallic box about the size of a shoe box. There is a crumpled note sitting beside it.",	
+			"description":"The bed is not sturdy or made well, and moving it makes a sound as though it has been moved many times and is now loose in the joints. As you move it you see a small hole in the floor that contains a metallic box about the size of a shoe box. There is a crumpled note sitting beside it.",
+			"inventory":["start0","movebed0"],	
 			"factors":{
 				"fear":1,
-				"anger":1,
-				"dispair":1
+				"anger":0,
+				"despair":0
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Ignore The Suspect Hole", 
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Ignore The Hole", 
 					"state":"SceneStart" },
 				{ 
-					"keycode":"b", 
+					"keycode":"s", 
+					"buttonId":"button1",
 					"description":"Open The Box", 
 					"state":"HiddenBox" },
 				{ 
-					"keycode":"n", 
+					"keycode":"d", 
+					"buttonId":"button2",
 					"description":"Read The Note", 
 					"state":"ReadNote" }		
 			]
 		},	
 		{
 			"name":"UnderBed1",
-			"description":"Because you moved the hole in the floor is in plain sight, whoever hid the box here must have been in a very poor mental state to think it would hide anything. You can’t shake and eerie feeling of deja vu that makes you uncomfortable.",	
+			"description":"Because you moved the bed the hole in the floor is in plain sight, whoever hid the box here must have been in a very poor mental state to think it would hide anything. You can’t shake and eerie feeling of deja vu that makes you uncomfortable. There is a crumpled note sitting beside the box.",	
 			"factors":{
 				"fear":1,
-				"anger":1,
-				"dispair":1
+				"anger":0,
+				"despair":0
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Ignore The Box", 
-					"state":"SceneStart" },
-				{ 
-					"keycode":"b", 
+					"keycode":"a", 
+					"buttonId":"button0",
 					"description":"Open The Box", 
-					"state":"HiddenBox" }	
+					"state":"HiddenBox" },
+				{ 
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Ignore The Box", 
+					"state":"SceneStart" },					
+				{ 
+					"keycode":"d", 
+					"buttonId":"button2",
+					"description":"Read The Note", 
+					"state":"ReadNote" }		
 			]
 		},	
 		{
 			"name":"UnderBed2",
-			"description":"The bed is not sturdy or made well, and moving it makes a sound as though it has been moved many times and is now loose in the joints. As you move it you see a small hole in the floor that contains a metallic box about the size of a shoe box.",	
+			"description":"Because you moved the bed the hole in the floor is in plain sight, whoever hid the box here must have been in a very poor mental state to think it would hide anything. You can’t shake and eerie feeling of deja vu that makes you uncomfortable.",	
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Ignore The Suspect Hole", 
-					"state":"SceneStart" },
-				{ 
-					"keycode":"b", 
+					"keycode":"a", 
+					"buttonId":"button0",
 					"description":"Open The Box", 
-					"state":"HiddenBox" }		
+					"state":"HiddenBox" },
+				{ 
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Ignore The Hole", 
+					"state":"SceneStart" },							
 			]
 		},			
 		{
@@ -142,21 +252,24 @@
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Go Back To What You Were Doing", 
-					"state":"SceneStart" },
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Put Box Back", 
+					"state":"UnderBed" },				
 				{ 
-					"keycode":"p", 
-					"description":"Put The Box Back", 
-					"state":"UnderBed" },
-				{ 
-					"keycode":"k", 
+					"keycode":"s", 
+					"buttonId":"button1",
 					"description":"Take The Key", 
-					"state":"TakeKey" }		
+					"state":"TakeKey" },
+				{ 
+					"keycode":"d", 
+					"buttonId":"button2",
+					"description":"Go Back", 
+					"state":"SceneStart" },								
 			]
 		},	
 		{
@@ -165,17 +278,19 @@
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Go Back To What You Were Doing", 
-					"state":"SceneStart" },
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Put Box Back", 
+					"state":"UnderBed" },
 				{ 
-					"keycode":"p", 
-					"description":"Put The Box Back", 
-					"state":"UnderBed" }
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Go Back", 
+					"state":"SceneStart" },					
 			]
 		},			
 		{
@@ -184,42 +299,47 @@
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},	
 			"inventory":["key0"],		
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Go Back To What You Were Doing", 
-					"state":"SceneStart" },
-				{ 
-					"keycode":"d", 
-					"description":"Try To Unlock The Door", 
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Unlock The Door", 
 					"state":"Door" },
 				{ 
-					"keycode":"b", 
-					"description":"Put The Empty Box Back", 
-					"state":"UnderBed" }		
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Put Box Back", 
+					"state":"UnderBed" },
+				{  
+					"keycode":"d", 
+					"buttonId":"button2",
+					"description":"Go Back", 
+					"state":"SceneStart" }		
 			]
 		},	
 		{
 			"name":"ReadNote0",
-			"description":"As you un-crumple the note you start to recognize the writing as the same on the walls. The scribbled writing looks it was written by a madman: “SLEEP DO NOT CREEP WITH SEETHING FEAR. THEIR ABOMINATION WILL BREAK YOU, DO NOT TRY AGAIN YOU FOOL! IT IS BETTER TO NOT KNOW. TO BE TAKEN IS A CRUEL FATE UNFATHOMABLE AND THE HORROR OF KNOWING WILL CONSUME YOU WITH MADNESS. THE WORM’S MILK IS THE ONLY WAY BACK. THEIR CRUEL DARKNESS IS BOUNDLESS. NEVER FORGET THAT IF THE CROWS SEE YOU THEN THEY WILL HAVE YOU.”. You put the note in your pocket. The metallic box is still sitting in hole.",	
+			"description":"As you un-crumple the note you start to recognize the writing as the same on the walls. The scribbled writing looks it was written by a madman: “SLEEP DO NOT CREEP WITH SEETHING FEAR. THEIR ABOMINATION WILL BREAK YOU, DO NOT TRY AGAIN YOU FOOL! IT IS BETTER TO NOT KNOW. TO BE TAKEN IS A CRUEL FATE UNFATHOMABLE AND THE HORROR OF KNOWING WILL CONSUME YOU WITH MADNESS. THE SHIMMERING WORM’S MILK IS THE ONLY WAY BACK. THEIR CRUEL DARKNESS IS BOUNDLESS. NEVER FORGET THAT IF THE CROWS SEE YOU THEN THEY WILL HAVE YOU.”. You put the note in your pocket. The metallic box is still sitting in hole.",	
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},		
 			"inventory":["note0"],	
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Go Back To What You Were Doing", 
-					"state":"SceneStart" },
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Look In Hole", 
+					"state":"UnderBed" },
 				{ 
-					"keycode":"b", 
-					"description":"Open The Box", 
-					"state":"HiddenBox" }
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Go Back", 
+					"state":"SceneStart" }					
 			]	
 		},	
 		{
@@ -228,12 +348,13 @@
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Find A Different Way Out", 
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Go Back", 
 					"state":"SceneStart" }
 			]	
 		},	
@@ -243,22 +364,30 @@
 			"factors":{
 				"fear":1,
 				"anger":1,
-				"dispair":1
+				"despair":1
 			},			
 			"keys":[
 				{ 
-					"keycode":"c", 
-					"description":"Go Back. You Are Too Afraid.", 
-					"state":"SceneStart" },
+					"keycode":"a", 
+					"buttonId":"button0",
+					"description":"Leave The Room", 
+					"state":"SceneExit" },
 				{ 
-					"keycode":"e", 
-					"description":"Leave The Room With Dread", 
-					"state":"HiddenBox" }
+					"keycode":"s", 
+					"buttonId":"button1",
+					"description":"Go Back", 
+					"state":"SceneStart" },
 			]	
 		},	
 		{
 			"name":"SceneExit0",
-			"description":"You have escaped."
+			"description":"You have escaped.",	
+			"factors":{
+				"fear":2,
+				"anger":0,
+				"despair":0
+			},			
+			"keys":[]	
 		},												
 	]
 }

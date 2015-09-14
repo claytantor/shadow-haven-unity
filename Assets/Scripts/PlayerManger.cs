@@ -13,13 +13,11 @@ public class PlayerManger : MonoBehaviour {
 	public int anger = 0;
 	public int fear = 0;
 	
-	public List<string> inventory = new List<string>();
-	//public string inventoryList;
+	public HashSet<string> inventory = new HashSet<string>();
 
 	
 	void Awake() {
 		DontDestroyOnLoad(playerGameObject);
-		//inventoryList = "";
 	}
 
 	// Use this for initialization
@@ -34,15 +32,14 @@ public class PlayerManger : MonoBehaviour {
 	
 	public void AddInventory(string item){
 		inventory.Add(item);
-//		foreach(string itemInv in inventory)
-//		{
-//			inventoryList = itemInv+",";
-//		}
 	}
 	
-	public void SetReaction(int[] reactions){
-		despair+=reactions[0];
-		anger+=reactions[1];
-		fear+=reactions[2];		
+	public List<string> GetInventoryList(){
+		List<string> il = new List<string>();
+		foreach(string item in this.inventory){
+			il.Add(item);
+		}
+		return il;
 	}
+	
 }

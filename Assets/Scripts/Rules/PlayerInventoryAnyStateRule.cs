@@ -2,7 +2,7 @@
 
 namespace Rules
 {
-	internal class PlayerInventoryStateCondition : BaseCondition<InventoryState>
+	internal class PlayerInventoryAnyStateCondition : BaseCondition<InventoryState>
 	{
 		#region Constructors
 		
@@ -11,7 +11,7 @@ namespace Rules
 		/// </summary>
 		/// <param name="threshold">The threshold value.</param>
 		/// <param name="actual">The actual value.</param>
-		public PlayerInventoryStateCondition(InventoryState threshold)
+		public PlayerInventoryAnyStateCondition(InventoryState threshold)
 		: base(threshold) { }
 		
 		#endregion
@@ -25,14 +25,14 @@ namespace Rules
 		public override bool IsSatisfied
 		{
 			get {			
-				return Value.ContainsAll(Threshold); 
+				return Value.ContainsAny(Threshold); 
 			}
 		}
 		
 		#endregion
 	}
 	
-	internal class PlayerInventoryStateRule : BaseRule<InventoryState>
+	internal class PlayerInventoryAnyStateRule : BaseRule<InventoryState>
 	{
 		public string stateResult;
 		
@@ -42,7 +42,7 @@ namespace Rules
 		/// Initializes a new instance of the <see cref="PlayerInventoryStateRule"/> class.
 		/// </summary>
 		/// <param name="threshold">The threshold.</param>
-		public PlayerInventoryStateRule(InventoryState threshold, string stateResult)
+		public PlayerInventoryAnyStateRule(InventoryState threshold, string stateResult)
 			: base(threshold)
 		{
 			this.stateResult = stateResult;
@@ -70,7 +70,7 @@ namespace Rules
 			Conditions.Clear();
 			
 			// Create our conditions
-			var condition1 = new PlayerInventoryStateCondition(Threshold);
+			var condition1 = new PlayerInventoryAnyStateCondition(Threshold);
 			
 			// ...and add them to our collection of conditions
 			Conditions.Add(condition1);
@@ -88,4 +88,7 @@ namespace Rules
 		#endregion
 	}
 }
+
+
+
 
