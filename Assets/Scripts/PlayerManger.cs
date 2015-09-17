@@ -6,14 +6,18 @@ using System.Collections.Generic;
 public class PlayerManger : MonoBehaviour {
 
 	public GameObject playerGameObject;
-	
+	public string id;
 	public string playerName = "Foobar";
 	
 	public int despair = 0;
 	public int anger = 0;
 	public int fear = 0;
 	
-	public HashSet<string> inventory = new HashSet<string>();
+	public Text textFactorsUI;
+	
+	public HashSet<string> state_crumbs = new HashSet<string>();
+	
+	public List<string> notes = new List<string>();
 
 	
 	void Awake() {
@@ -22,7 +26,7 @@ public class PlayerManger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		//this.UpdateState();
 	}
 	
 	// Update is called once per frame
@@ -30,16 +34,33 @@ public class PlayerManger : MonoBehaviour {
 	
 	}
 	
-	public void AddInventory(string item){
-		inventory.Add(item);
+	public void AddStateCrumb(string item){
+		state_crumbs.Add(item);
 	}
 	
-	public List<string> GetInventoryList(){
+	public List<string> GetCrumbList(){
 		List<string> il = new List<string>();
-		foreach(string item in this.inventory){
+		foreach(string item in this.state_crumbs){
 			il.Add(item);
 		}
 		return il;
 	}
+	
+	public void AddNote(string item){
+		notes.Add(item);
+	}
+	
+	public List<string> GetNoteList(){
+		List<string> il = new List<string>();
+		return il;
+	}
+	
+	
+	public void SavePlayer(){
+		PlayerPrefs.SetString(this.id, "{}");
+		PlayerPrefs.Save();
+	}
+	
+
 	
 }

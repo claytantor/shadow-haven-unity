@@ -2,7 +2,7 @@
 
 namespace Rules
 {
-	internal class PlayerInventoryAnyStateCondition : BaseCondition<InventoryState>
+	internal class PlayerCrumbAnyStateCondition : BaseCondition<CrumbState>
 	{
 		#region Constructors
 		
@@ -11,7 +11,7 @@ namespace Rules
 		/// </summary>
 		/// <param name="threshold">The threshold value.</param>
 		/// <param name="actual">The actual value.</param>
-		public PlayerInventoryAnyStateCondition(InventoryState threshold)
+		public PlayerCrumbAnyStateCondition(CrumbState threshold)
 		: base(threshold) { }
 		
 		#endregion
@@ -32,7 +32,7 @@ namespace Rules
 		#endregion
 	}
 	
-	internal class PlayerInventoryAnyStateRule : BaseRule<InventoryState>
+	internal class PlayerCrumbAnyStateRule : BaseRule<CrumbState>
 	{
 		public string stateResult;
 		
@@ -42,7 +42,7 @@ namespace Rules
 		/// Initializes a new instance of the <see cref="PlayerInventoryStateRule"/> class.
 		/// </summary>
 		/// <param name="threshold">The threshold.</param>
-		public PlayerInventoryAnyStateRule(InventoryState threshold, string stateResult)
+		public PlayerCrumbAnyStateRule(CrumbState threshold, string stateResult)
 			: base(threshold)
 		{
 			this.stateResult = stateResult;
@@ -70,7 +70,7 @@ namespace Rules
 			Conditions.Clear();
 			
 			// Create our conditions
-			var condition1 = new PlayerInventoryAnyStateCondition(Threshold);
+			var condition1 = new PlayerCrumbAnyStateCondition(Threshold);
 			
 			// ...and add them to our collection of conditions
 			Conditions.Add(condition1);

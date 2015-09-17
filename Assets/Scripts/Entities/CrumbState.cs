@@ -2,21 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class InventoryState {
-	public string[] inventory;
+public class CrumbState {
+	public string[] crumbs;
 	public string baseState;
 	
-	public InventoryState(string[] inventory, string state){
-		this.inventory = inventory;
+	public CrumbState(string[] crumbs, string state){
+		this.crumbs = crumbs;
 		this.baseState = state;	
 	}
 	
 	
-	public bool ContainsAll(InventoryState _i){
-		string[] items = this.inventory;
-		string[] _items = _i.inventory;
-//		string a = string.Join(",", items);
-//		string b = string.Join(",", _items);
+	public bool ContainsAll(CrumbState _i){
+		string[] items = this.crumbs;
+		string[] _items = _i.crumbs;
 		
 		if(items.Length != _items.Length){
 			return false;
@@ -34,9 +32,6 @@ public class InventoryState {
 			}				
 		}
 		
-		//must match
-//		Debug.Log(string.Format("matchcount:{0} == _items.Length:{1} and items.Length:{2} > 0", 
-//			matchcount, _items.Length, items.Length));
 			
 		if(matchcount == _items.Length && items.Length > 0){
 			//string.Format("RULE MATCH state: {0} value {1}",_i.baseState, a);
@@ -47,12 +42,10 @@ public class InventoryState {
 				
 	}
 	
-	public bool ContainsAny(InventoryState _i){
+	public bool ContainsAny(CrumbState _i){
 	
-		string[] items = this.inventory;
-		string[] _items = _i.inventory;
-//		string a = string.Join(",", items);
-//		string b = string.Join(",", _items);
+		string[] items = this.crumbs;
+		string[] _items = _i.crumbs;
 		
 		if(items.Length != _items.Length){
 			return false;

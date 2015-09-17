@@ -5,22 +5,27 @@ using System.Collections.Generic;
 using RuleEngine.Engine;
 using Rules;
 using SimpleJSON;
+using Utils;
 
 public class Scene1Controller : MonoBehaviour {
 	
 	public string description;
 	public string loadScene = null;
 	public KeyDescription[] keys;
-	public RuleEngine<InventoryState> playerStateRuleEngine = new RuleEngine<InventoryState>();		
+	public RuleEngine<CrumbState> playerStateRuleEngine = new RuleEngine<CrumbState>();		
 	public GameObject playerGameObject;
 	public PlayerManger playerManager;
 	public TextAsset scene1Json;	
 	public State state;
 	public Text textState;
-	public Text textStatusUI;
+	public Text textFactors;
+	public Canvas inventoryCanvas; 
+	
 	public Button[] buttons;
 	
 	private JSONArray states;
+	
+	private string[] button_names = new string[] {"key0", "notepad0"};
 	
 	//========== mono game methods
 	
@@ -50,45 +55,65 @@ public class Scene1Controller : MonoBehaviour {
 		var rulesArray = dict["rules"].AsArray;
 		foreach(JSONNode ruleNode in rulesArray){
 			playerStateRuleEngine.Add(JsonGameRuleFactory.make(ruleNode));
-			//string ruletype = ruleNode["type"];
+		}	
+		
+
+		
+		//myButton.Getcomponent<Button>().onClick.AddListener(action);
+		RectTransform objectRectTransform = inventoryCanvas.GetComponent<RectTransform> ();
+		Debug.Log("width: " + objectRectTransform.rect.width + ", height: " + objectRectTransform.rect.height);
+		
+		for(int i = 0; i < button_names.Length; i++){
+			//make a single button in unity
+			string item = button_names[i];
+			GameObject btnGO = new GameObject("Button"+item);
+			btnGO.name = "Button"+item;
+			btnGO.transform.SetParent(inventoryCanvas.transform, false);
 			
-//			if(ruletype.Equals("PlayerInventoryStateRule")){
-//				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
-//				string[] iA = new string[inventoryJson.Count];
-//				
-//				int index = 0;
-//				foreach(JSONNode item in inventoryJson){
-//					iA[index] = (string)item;
-//					index+=1;
-//				}
-//						
-//				string baseState = ruleNode["baseState"];
-//				string resultState = ruleNode["resultState"];
-//				playerStateRuleEngine.Add(
-//					new PlayerInventoryAllStateRule(
-//						new InventoryState(iA,baseState), resultState));
-//			}
+			btnGO.AddComponent<RectTransform> ();
+			RectTransform rect = btnGO.GetComponent<RectTransform>();
+			int size = 50;
+			int lbx = (i*size)-192-(int)(size/2);
+			int lby = (int)(size/2);
+			//int rtx = (((i+1)*size)+(i*3))-195;
+			//int rty = 22;
+			Debug.Log(string.Format("lb:{0},{1}", lbx,lby));
+			RectTransformExtensions.SetSize(rect,new Vector2(size,size));
+			RectTransformExtensions.SetLeftTopPosition(rect,new Vector2(lbx,lby));
+			//RectTransformExtensions.SetRightTopPosition(rect,new Vector2(rtx,rty));
+
+			
+			btnGO.AddComponent<Button>();
+			btnGO.GetComponent<Button>().onClick.AddListener(() => {
+				//handle click here
+				Clicker(item);
+			});				
+			
+			btnGO.AddComponent<Image>();	
+			Image img = btnGO.GetComponent<Image> (); 
+			img.sprite = Resources.Load <Sprite>(item);
 		}				
-								
+		
+														
 	}
 	
+	void Clicker(string item){
+		Debug.Log(item);
+	}
+	
+	
 	void Start () {	
+		//keyButton = (Texture)Resources.Load("key0");
 		SetState("SceneStart");		
 	}
+	
+	
 	
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit();
 		}
-		
-		for(int i = 0; i < keys.Length; i++)
-		{
-			KeyDescription kd = keys[i];
-			if(Input.GetKey(kd.key)){
-				SetState(kd.state);								
-			}				
-		}
-				
+						
 	}
 	
 	
@@ -116,7 +141,7 @@ public class Scene1Controller : MonoBehaviour {
 		JSONNode stateNode = FindState(stateName, statesModel);		
 		description = stateNode["description"];		
 		MakeKeyListJson(stateNode["keys"].AsArray);
-		AddInventoryForState(stateNode);
+		AddCrumbForState(stateNode);
 		ModifyPlayerState(stateNode["factors"]);
 		
 		while (this.state == stateValue) {
@@ -231,13 +256,12 @@ public class Scene1Controller : MonoBehaviour {
 		return null;
 	}
 	
-	void AddInventoryForState(JSONNode state){
-		Debug.Log(state["inventory"]);
-		if(state["inventory"] != null){
-			JSONArray itemsL = state["inventory"].AsArray;
+	void AddCrumbForState(JSONNode state){
+		if(state["state_crumb"] != null){
+			JSONArray itemsL = state["state_crumb"].AsArray;
 			foreach(JSONNode itemNode in itemsL){
 				Debug.Log((string)itemNode);
-				playerManager.AddInventory((string)itemNode);
+				playerManager.AddStateCrumb((string)itemNode);
 			}		
 		}
 	}
@@ -247,11 +271,11 @@ public class Scene1Controller : MonoBehaviour {
 		Debug.Log("base state: " + stateBaseName);
 		
 				
-		var inventoryStateActual = 
-			new InventoryState(
-				playerManager.GetInventoryList().ToArray(), stateBaseName);
+		var crumbStateActual = 
+			new CrumbState(
+				playerManager.GetCrumbList().ToArray(), stateBaseName);
 		
-		playerStateRuleEngine.ActualValue = inventoryStateActual;
+		playerStateRuleEngine.ActualValue = crumbStateActual;
 				
 		// Get the result
 		var resultStates = playerStateRuleEngine.Matches();
@@ -260,7 +284,7 @@ public class Scene1Controller : MonoBehaviour {
 		//make the default state
 		string methodName = stateBaseName+"0";
 		if(resultStates.ToArray().Length>0){
-			foreach(PlayerInventoryAllStateRule rule in resultStates){
+			foreach(PlayerCrumbAllStateRule rule in resultStates){
 				methodName = rule.GetState(stateBaseName);		
 			}
 		} 
@@ -276,7 +300,7 @@ public class Scene1Controller : MonoBehaviour {
 				
 		//{0} player name
 		textState.text = string.Format(description, playerManager.playerName);
-		textStatusUI.text = MakeStatus()+" "+string.Join(",", playerManager.GetInventoryList().ToArray());	
+		textFactors.text = MakeStatus();	
 		
 
 		//disable all
@@ -294,6 +318,8 @@ public class Scene1Controller : MonoBehaviour {
 			buttons[i].image.color = new Color(0.9f, 0.9f, 0.9f);
 			buttons[i].interactable = true;			
 		}
+		
+		//playerManager.UpdateState();
 		
 		if(state == State.SceneExit0){
 			Application.LoadLevel(2);

@@ -6,11 +6,11 @@ using SimpleJSON;
 namespace Rules
 {
 	static class JsonGameRuleFactory {
-		public static BaseRule<InventoryState> make(JSONNode ruleNode){
+		public static BaseRule<CrumbState> make(JSONNode ruleNode){
 		
 			string ruletype = ruleNode["type"];
 			Debug.Log("ruletype:"+ruletype);
-			BaseRule<InventoryState> rule = null;
+			BaseRule<CrumbState> rule = null;
 			
 			if(ruletype.Equals("PlayerInventoryAllStateRule")){
 				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
@@ -24,7 +24,7 @@ namespace Rules
 				
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
-				rule = new PlayerInventoryAllStateRule(new InventoryState(iA, baseState), resultState);	
+				rule = new PlayerCrumbAllStateRule(new CrumbState(iA, baseState), resultState);	
 							
 			} else if(ruletype.Equals("PlayerInventoryAnyStateRule")){
 				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
@@ -38,7 +38,7 @@ namespace Rules
 				
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
-				rule = new PlayerInventoryAnyStateRule(new InventoryState(iA, baseState), resultState);				
+				rule = new PlayerCrumbAnyStateRule(new CrumbState(iA, baseState), resultState);				
 			}
 			// Guard against a NULL rule
 			if (rule == null)
