@@ -4,47 +4,47 @@
 	},
 	"rules":[
 		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["key0"],
+			"type":"PlayerCrumbAnyStateRule",
+			"state_crumb":["key0"],
 			"baseState":"HiddenBox",
 			"resultState":"HiddenBox1"
 		},		
 		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["start0","movebed0","key0"],
+			"type":"PlayerCrumbAllStateRule",
+			"state_crumb":["start0","movebed0","key0"],
 			"baseState":"Door",
 			"resultState":"Door1"
 		},
 		{
-			"type":"PlayerInventoryAnyStateRule",
-			"inventory":["key0"],
+			"type":"PlayerCrumbAnyStateRule",
+			"state_crumb":["key0"],
 			"baseState":"Door",
 			"resultState":"Door1"
 		},		
 		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["start0","movebed0"],
+			"type":"PlayerCrumbAllStateRule",
+			"state_crumb":["start0","movebed0"],
 			"baseState":"UnderBed",
 			"resultState":"UnderBed1"
 		},		
 		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["start0","movebed0","note0"],
+			"type":"PlayerCrumbAllStateRule",
+			"state_crumb":["start0","movebed0","note0"],
 			"baseState":"UnderBed",
 			"resultState":"UnderBed2"
-		},	
-		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["start0"],
-			"baseState":"SceneStart",
-			"resultState":"SceneStart1"
 		},
 		{
-			"type":"PlayerInventoryAllStateRule",
-			"inventory":["start0","movebed0"],
+			"type":"PlayerCrumbAllStateRule",
+			"state_crumb":["start0","movebed0","note0","key0"],
+			"baseState":"UnderBed",
+			"resultState":"UnderBed2"
+		},				
+		{
+			"type":"PlayerCrumbAnyStateRule",
+			"state_crumb":["start0"],
 			"baseState":"SceneStart",
-			"resultState":"SceneStart2"
-		}						
+			"resultState":"SceneStart1"
+		}					
 	],
 	"states":[
 		{
@@ -105,45 +105,14 @@
 				{ 
 					"keycode":"f", 
 					"buttonId":"button3", 
-					"description":"Move The Bed", 
-					"state":"UnderBed" }		
-			]
-		},
-		{
-			"name":"SceneStart2",
-			"description":"You are in a room of unknown composition approx 2m x 3m long.  A mirror on the wall is scratched and uneven, and you are afraid of what you will see in it. When you moved the bed it exposed a small hole in the floor. The door has a heavy bolt lock. This all looks strangely familiar but you don’t know why.",	
-			"factors":{
-				"fear":0,
-				"anger":0,
-				"despair":1
-			},		
-			"keys":[
-				{ 
-					"keycode":"a", 
-					"buttonId":"button0", 
-					"description":"Escape The Pain", 
-					"state":"GotoBed" },
-				{ 
-					"keycode":"s", 
-					"buttonId":"button1", 
-					"description":"Face Yourself", 
-					"state":"MirrorView" },
-				{ 
-					"keycode":"d", 
-					"buttonId":"button2", 
-					"description":"Open The Door", 
-					"state":"Door" },
-				{ 
-					"keycode":"f", 
-					"buttonId":"button3", 
-					"description":"Move The Bed", 
+					"description":"Look In Hole", 
 					"state":"UnderBed" }		
 			]
 		},
 		{
 			"name":"GotoBed0",
 			"description":"The bed feels soft, but you can't shake a cold feeling. You feel terrible and sad. Something has come over you and there are waves of guilt and self hatred you find it hard to shake. Sleeping doesn’t help, the more you stay in bed the more tired you feel.",	
-			"inventory":["start0"],
+			"state_crumb":["start0"],
 			"factors":{
 				"fear":0,
 				"anger":0,
@@ -159,7 +128,7 @@
 		{
 			"name":"MirrorView0",
 			"description":"You look at yourself in the mirror. You don’t look normal, the person there seems like a different version of yourself. Your nose feels longer and sharper than it should and your eyes are dark and beedy like a bird’s souless glare. You dark hear almost looks of oily feathers. As that empty stare looks back at you and you feel contempt and disgust for the doppleganger that lives on the other side of this silver glass.",
-			"inventory":["start0"],	
+			"state_crumb":["start0"],	
 			"factors":{
 				"fear":0,
 				"anger":2,
@@ -175,7 +144,7 @@
 		{
 			"name":"UnderBed0",
 			"description":"The bed is not sturdy or made well, and moving it makes a sound as though it has been moved many times and is now loose in the joints. As you move it you see a small hole in the floor that contains a metallic box about the size of a shoe box. There is a crumpled note sitting beside it.",
-			"inventory":["start0","movebed0"],	
+			"state_crumb":["start0","movebed0"],	
 			"factors":{
 				"fear":1,
 				"anger":0,
@@ -248,7 +217,7 @@
 		},			
 		{
 			"name":"HiddenBox0",
-			"description":"The box almost seems alive as you pass your fingers over. Radiating in blue a small glyphic character on the top of a foreign language which confuses. As you open it inside the box is a shimmering key made of material you can’t quite identify. It feels warm to the touch and vibrates slightly, as if it has its own power source. There is a crumpled note in the box.",	
+			"description":"The box almost seems alive as you pass your fingers over. Radiating in blue a small glyphic character on the top of a foreign language which confuses. As you open it inside the box is a shimmering key made of material you can’t quite identify. It feels warm to the touch and vibrates slightly, as if it has its own power source.",	
 			"factors":{
 				"fear":1,
 				"anger":1,
@@ -301,6 +270,7 @@
 				"anger":1,
 				"despair":1
 			},	
+			"state_crumb":["key0"],	
 			"inventory":["key0"],		
 			"keys":[
 				{ 
@@ -328,7 +298,9 @@
 				"anger":1,
 				"despair":1
 			},		
+			"state_crumb":["note0"],
 			"inventory":["note0"],	
+			"notes":["note0"],
 			"keys":[
 				{ 
 					"keycode":"a", 

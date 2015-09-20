@@ -16,8 +16,8 @@ public class PlayerManger : MonoBehaviour {
 	public Text textFactorsUI;
 	
 	public HashSet<string> state_crumbs = new HashSet<string>();
-	
-	public List<string> notes = new List<string>();
+	public HashSet<string> inventory_items = new HashSet<string>();
+	public HashSet<string> notes = new HashSet<string>();
 
 	
 	void Awake() {
@@ -46,12 +46,27 @@ public class PlayerManger : MonoBehaviour {
 		return il;
 	}
 	
+	public void AddInventoryItem(string item){
+		inventory_items.Add(item);
+	}
+	
+	public List<string> GetInventoryList(){
+		List<string> il = new List<string>();
+		foreach(string item in this.inventory_items){
+			il.Add(item);
+		}
+		return il;
+	}
+	
 	public void AddNote(string item){
 		notes.Add(item);
 	}
 	
 	public List<string> GetNoteList(){
 		List<string> il = new List<string>();
+		foreach(string item in this.notes){
+			il.Add(item);
+		}
 		return il;
 	}
 	

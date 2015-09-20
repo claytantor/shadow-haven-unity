@@ -12,12 +12,12 @@ namespace Rules
 			Debug.Log("ruletype:"+ruletype);
 			BaseRule<CrumbState> rule = null;
 			
-			if(ruletype.Equals("PlayerInventoryAllStateRule")){
-				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
-				string[] iA = new string[inventoryJson.Count];
+			if(ruletype.Equals("PlayerCrumbAllStateRule")){
+				JSONArray crumbJson = ruleNode["state_crumb"].AsArray;
+				string[] iA = new string[crumbJson.Count];
 				
 				int index = 0;
-				foreach(JSONNode item in inventoryJson){
+				foreach(JSONNode item in crumbJson){
 					iA[index] = (string)item;
 					index+=1;
 				}
@@ -26,8 +26,8 @@ namespace Rules
 				string resultState = ruleNode["resultState"];
 				rule = new PlayerCrumbAllStateRule(new CrumbState(iA, baseState), resultState);	
 							
-			} else if(ruletype.Equals("PlayerInventoryAnyStateRule")){
-				JSONArray inventoryJson = ruleNode["inventory"].AsArray;
+			} else if(ruletype.Equals("PlayerCrumbAnyStateRule")){
+				JSONArray inventoryJson = ruleNode["state_crumb"].AsArray;
 				string[] iA = new string[inventoryJson.Count];
 				
 				int index = 0;

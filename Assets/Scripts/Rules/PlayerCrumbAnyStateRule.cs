@@ -32,7 +32,7 @@ namespace Rules
 		#endregion
 	}
 	
-	internal class PlayerCrumbAnyStateRule : BaseRule<CrumbState>
+	internal class PlayerCrumbAnyStateRule : BaseRule<CrumbState>,GameRule
 	{
 		public string stateResult;
 		
