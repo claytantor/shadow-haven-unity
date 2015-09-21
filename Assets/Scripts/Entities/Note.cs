@@ -25,7 +25,7 @@ public class Note
 		return text;
 	}	
 	
-	public string ToString(){
+	public override string ToString(){
 		return string.Format("id:{0} title:{1} text:{2}", this.id, this.title, this.text);
 	}	
 	

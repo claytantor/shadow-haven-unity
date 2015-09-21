@@ -7,12 +7,13 @@ using Rules;
 using SimpleJSON;
 using Utils;
 
-public class Scene1Controller : MonoBehaviour {
+public class Scene2Controller : MonoBehaviour {
 	
 	// ========== public 
-	public TextAsset scene1Json;
+	public TextAsset scene2Json;
 	public Canvas stateCanvas;	
 	public Canvas stateDescCanvas;
+	public Canvas stateButtonsCanvas;
 	public Canvas inventoryCanvas; 
 	public Canvas notepadCanvas; 
 	
@@ -27,7 +28,7 @@ public class Scene1Controller : MonoBehaviour {
 
 	
 	private PlayerManger playerManager;
-	private Button[] buttons;	
+	//private Button[] buttons;	
 	private JSONArray states;
 	private GameObject textGO;
 	
@@ -42,15 +43,8 @@ public class Scene1Controller : MonoBehaviour {
 		this.arialFont = (Font)Resources.GetBuiltinResource (typeof(Font), "Arial.ttf");
 		
 		//load the JSON
-		var dict = JSON.Parse(scene1Json.text);
+		var dict = JSON.Parse(scene2Json.text);
 		this.states = dict["states"].AsArray;
-		
-		//load the buttons
-		buttons = new Button[4];
-		for(int i = 0; i < buttons.Length; i++){
-			buttons[i] = GameObject.Find("/CanvasGame/CanvasState/ButtonPanel/Button"+i).GetComponent<Button>();
-			buttons[i].image.color = new Color(0.9f, 0.9f, 0.9f);
-		}	
 				
 		//create fake player object if not in game
 		playerGameObject = GameObject.Find("/PlayerGameObject");
@@ -155,6 +149,7 @@ public class Scene1Controller : MonoBehaviour {
 		JSONNode stateNode = FindState(stateName, statesModel);		
 		description = stateNode["description"];		
 		MakeKeyListJson(stateNode["keys"].AsArray);
+		MakeStateKeyButtons(this.keys);
 		AddCrumbForState(stateNode["state_crumb"]);
 		AddInventoryForState(stateNode["inventory"]);
 		ModifyPlayerState(stateNode["factors"]);
@@ -167,35 +162,11 @@ public class Scene1Controller : MonoBehaviour {
 	
 	//the states
 	public enum State {
-		SceneStart0,
-		SceneStart1,
-		GotoBed0,
-		MirrorView0,
-		UnderBed0,
-		UnderBed1,
-		UnderBed2,
-		HiddenBox0,
-		HiddenBox1,
-		TakeKey0,
-		ReadNote0,
-		Door0,
-		Door1,
+		SceneStart0,		
 		SceneExit0
 	}
 	
 	IEnumerator SceneStart0 () { return InitState("SceneStart0", State.SceneStart0, this.states); }
-	IEnumerator SceneStart1 () { return InitState("SceneStart1", State.SceneStart1, this.states); }
-	IEnumerator GotoBed0 () { return InitState("GotoBed0", State.GotoBed0, this.states); }
-	IEnumerator MirrorView0 () { return InitState("MirrorView0", State.MirrorView0, this.states); }	
-	IEnumerator UnderBed0 () { return InitState("UnderBed0", State.UnderBed0, this.states);	 }
-	IEnumerator UnderBed1 () { return InitState("UnderBed1", State.UnderBed1, this.states);	}
-	IEnumerator UnderBed2 () { return InitState("UnderBed2", State.UnderBed2, this.states);	}	
-	IEnumerator HiddenBox0 () { return InitState("HiddenBox0", State.HiddenBox0, this.states);}
-	IEnumerator HiddenBox1 () { return InitState("HiddenBox1", State.HiddenBox1, this.states); }
-	IEnumerator ReadNote0 () { return InitState("ReadNote0", State.ReadNote0, this.states); }	
-	IEnumerator TakeKey0 () { return InitState("TakeKey0", State.TakeKey0, this.states); }
-	IEnumerator Door0 () { return InitState("Door0", State.Door0, this.states); }
-	IEnumerator Door1 () { return InitState("Door1", State.Door1, this.states);	 }
 	IEnumerator SceneExit0 () { return InitState("SceneExit0", State.SceneExit0, this.states); }					
 	
 	void MakeKeyListJson(JSONArray keyArray){
@@ -213,13 +184,31 @@ public class Scene1Controller : MonoBehaviour {
 
 	}
 	
-	string MakeKeyText(KeyDescription[] keys){
-		string result = "";
-		for(int i = 0; i < keys.Length; i++){
-			result+=string.Format("\n\rPress {0} to {1}", keys[i].key, keys[i].action);
+	void MakeStateKeyButtons(KeyDescription[] keys){
+	
+		//remove child buttons
+		foreach (Transform child in this.stateButtonsCanvas.transform) {
+			GameObject.Destroy(child.gameObject);
 		}
-		return result;
+		
+		//make a button for each key and add as child		
+		for(int i = 0; i < keys.Length; i++){
+			int dx = (i*170)-330;
+			GameObject btnBack = UIExtensions.MakeTextColorButton(
+				keys[i].buttonId, 
+				new Vector2(160,30), 
+				new Vector2(dx, 27), 
+				keys[i].action,
+				arialFont, 18, Color.white,
+				Color.gray,
+				TextAnchor.MiddleCenter,
+				ButtonEvent);
+				
+			btnBack.transform.SetParent(this.stateButtonsCanvas.transform, false);
+		}
+		
 	}
+	
 	
 	void ModifyPlayerState(JSONNode factors){
 		playerManager.anger+=factors["anger"].AsInt;
@@ -304,21 +293,23 @@ public class Scene1Controller : MonoBehaviour {
 		textFactors.text = MakeStatus();	
 		
 
-		//disable all
-		for(int i = keys.Length; i < buttons.Length; i++)
-		{
-			buttons[i].GetComponentInChildren<Text>().text = "";
-			buttons[i].interactable = false;
-		}
+//		//disable all
+//		for(int i = keys.Length; i < buttons.Length; i++)
+//		{
+//			buttons[i].GetComponentInChildren<Text>().text = "";
+//			buttons[i].interactable = false;
+//		}
+//		
+//		//enable by key
+//		for(int i = 0; i < keys.Length; i++)
+//		{
+//			KeyDescription kd = keys[i];
+//			buttons[i].GetComponentInChildren<Text>().text = kd.action;
+//			buttons[i].image.color = new Color(0.9f, 0.9f, 0.9f);
+//			buttons[i].interactable = true;			
+//		}
+
 		
-		//enable by key
-		for(int i = 0; i < keys.Length; i++)
-		{
-			KeyDescription kd = keys[i];
-			buttons[i].GetComponentInChildren<Text>().text = kd.action;
-			buttons[i].image.color = new Color(0.9f, 0.9f, 0.9f);
-			buttons[i].interactable = true;			
-		}
 		
 		//set the invenotry
 		MakeInventory(playerManager.GetInventoryList().ToArray());
