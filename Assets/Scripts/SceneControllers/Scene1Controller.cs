@@ -74,7 +74,6 @@ public class Scene1Controller : BaseSceneController {
 		
 		
 		//must set inventory after state
-		//set the invenotry
 		MakeInventory(playerManager.GetInventoryList().ToArray(), inventoryCanvas);
 		
 		if(state == State.SceneExit0){
@@ -84,6 +83,5 @@ public class Scene1Controller : BaseSceneController {
 		return methodName;
 	
 	}
-	
-	
+		
 }

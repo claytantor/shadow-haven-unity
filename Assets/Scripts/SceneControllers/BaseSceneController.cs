@@ -18,7 +18,8 @@ public class BaseSceneController : MonoBehaviour
 	public Canvas inventoryCanvas; 
 	public Canvas notepadCanvas; 	
 	
-	public Text textFactors;	
+	public Text textFactors;
+	public Text textTitle;		
 	
 	protected KeyDescription[] keys;
 	protected RuleEngine<CrumbState> playerStateRuleEngine = new RuleEngine<CrumbState>();
@@ -35,23 +36,28 @@ public class BaseSceneController : MonoBehaviour
 	protected Text textState;	
 	
 	
+	
+	
 	public void Awake() {
 	
 		//load the font
 		font = (Font)Resources.GetBuiltinResource (typeof(Font), "Arial.ttf");
 	
 		//create fake player object if not in game
-		playerGameObject = GameObject.Find("/PlayerGameObject");
+		playerGameObject = GameObject.Find("/MainGameObject");
 		if(playerGameObject != null){
+			Debug.Log("found player game object");
 			playerManager = playerGameObject.GetComponent<PlayerManger>();
 		} else {
+			Debug.Log("CANNOT find player game object, creating");
 			playerGameObject = GameObject.Find("/SceneGameObject");
 			playerManager = playerGameObject.AddComponent<PlayerManger>();
 		}	
 		
 		//load the json
 		var dict = JSON.Parse(sceneJson.text);
-		this.states = dict["states"].AsArray;
+		textTitle.text = (string)dict["sceneInfo"]["name"];
+		states = dict["states"].AsArray;
 		
 		//load rules
 		var rulesArray = dict["rules"].AsArray;
@@ -74,7 +80,11 @@ public class BaseSceneController : MonoBehaviour
 		textState.text = "";
 		textState.font = font;
 		textState.fontSize = 30;
-				
+		
+		//initialize from last state
+		MakeInventory(playerManager.GetInventoryList().ToArray(), inventoryCanvas);
+		
+		
 	}
 	
 	protected void MakeInventory(string[] inventory_items, Canvas inventoryCanvas){
@@ -93,7 +103,7 @@ public class BaseSceneController : MonoBehaviour
 			//only add if it does not exist
 			if(!buttonlst.Contains(item)){
 				int size = 50;
-				int lbx = (i*size)-192-(int)(size/2);
+				int lbx = (i*size)-350-(int)(size/2);
 				int lby = (int)(size/2);				
 				GameObject btnGO = 
 					Utils.UIExtensions.MakeImageButton(

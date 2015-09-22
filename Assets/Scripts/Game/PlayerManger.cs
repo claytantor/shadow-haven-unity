@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 public class PlayerManger : MonoBehaviour {
 
@@ -18,6 +21,11 @@ public class PlayerManger : MonoBehaviour {
 	public HashSet<string> state_crumbs = new HashSet<string>();
 	public HashSet<string> inventory_items = new HashSet<string>();
 	public HashSet<string> notes = new HashSet<string>();
+	
+	public List<Player> savedPlayers = new List<Player>();
+	
+	public Player currentPlayer;
+	
 
 	
 	void Awake() {
@@ -70,11 +78,33 @@ public class PlayerManger : MonoBehaviour {
 		return il;
 	}
 	
+	public void Save() {
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create (Application.persistentDataPath + "/savedPlayers.gd");
+		bf.Serialize(file, savedPlayers);
+		file.Close();
+	}	
 	
-	public void SavePlayer(){
-		PlayerPrefs.SetString(this.id, "{}");
-		PlayerPrefs.Save();
+	public void Load() {
+		if(File.Exists(Application.persistentDataPath + "/savedPlayers.gd")) {
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(Application.persistentDataPath + "/savedPlayers.gd", FileMode.Open);
+			savedPlayers = (List<Player>)bf.Deserialize(file);
+			file.Close();
+		}
 	}
+	
+	public Player CreatePlayer(){
+		
+		Player p = new Player();
+		DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
+		double timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
+		p.id = string.Format("{0}",timestamp.ToString());
+		savedPlayers.Add(p);
+
+		return p;
+		
+	} 
 	
 
 	
