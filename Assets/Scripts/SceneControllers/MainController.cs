@@ -23,7 +23,7 @@ public class MainController : MonoBehaviour {
 		
 		int index = 0;
 		foreach(Player player in playerManger.savedPlayers){
-			MakePlayerButton(player.name, index);
+			MakePlayerButton(player.Name, player.Id, index);
 			index+=1;
 			
 		}
@@ -48,23 +48,24 @@ public class MainController : MonoBehaviour {
 		
 		//create a new player
 		Player p = playerManger.CreatePlayer();
-		p.name = nameText.text;
-		
+		p.Name = nameText.text;
+		playerManger.currentPlayerId = p.Id;
 		playerManger.Save();
 					
-		MakePlayerButton(nameText.text, playerManger.savedPlayers.ToArray().Length-1);
+		MakePlayerButton(p.Name, p.Id, playerManger.savedPlayers.ToArray().Length-1);
 		
 	}
 	
-	void MakePlayerButton(string buttonId, int index){
+	void MakePlayerButton(string buttonName, string pId, int index){
 		
 		int ox = -376;
 		int oy = 210;						
-		GameObject btnPlayer = UIExtensions.MakeTextOnlyButton(
-			buttonId, 
+		GameObject btnPlayer = UIExtensions.MakeTextIdCallbackOnlyButton(
+			buttonName, 
+			pId,
 			new Vector2(730,30), 
 			new Vector2((float)ox,-(float)(index*30)+oy), 
-			buttonId,
+			buttonName, 
 			font, 18, Color.white, TextAnchor.MiddleLeft,
 			PlayerStartEvent);
 		
@@ -72,6 +73,9 @@ public class MainController : MonoBehaviour {
 	}
 	
 	void PlayerStartEvent(string id){
+		Debug.Log("starting game for player with id:"+id);
+		playerManger.SetCurrentPlayer(id);
+	
 		Application.LoadLevel(1);
 	}
 	

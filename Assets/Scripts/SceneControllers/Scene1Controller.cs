@@ -11,7 +11,10 @@ public class Scene1Controller : BaseSceneController {
 	
 	private State state;
 	
-	void Start () {	 SetState("SceneStart"); }
+	void Start () {
+		playerManager.sceneNumber = 1;	 
+		SetState(playerManager.lastState); 
+	}
 	
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Escape)){
@@ -71,8 +74,7 @@ public class Scene1Controller : BaseSceneController {
 			                    System.Reflection.BindingFlags.NonPublic |
 			                    System.Reflection.BindingFlags.Instance);
 		StartCoroutine((IEnumerator)info.Invoke(this, null));
-		
-		
+				
 		//must set inventory after state
 		MakeInventory(playerManager.GetInventoryList().ToArray(), inventoryCanvas);
 		

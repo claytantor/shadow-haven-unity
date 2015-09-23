@@ -236,6 +236,8 @@ public class BaseSceneController : MonoBehaviour
 	public virtual string SetState (string stateBaseName) {
 		
 		Debug.Log("base state: " + stateBaseName);
+		playerManager.lastState = stateBaseName;
+		playerManager.Save();
 		
 		//needed for rues		
 		var crumbStateActual = 
