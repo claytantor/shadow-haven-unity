@@ -2,7 +2,7 @@
 
 namespace Rules
 {
-	internal class PlayerCrumbAnyStateCondition : BaseCondition<CrumbState>
+	internal class PlayerStateFactors : BaseCondition<PlayerState>
 	{
 		#region Constructors
 		
@@ -11,7 +11,7 @@ namespace Rules
 		/// </summary>
 		/// <param name="threshold">The threshold value.</param>
 		/// <param name="actual">The actual value.</param>
-		public PlayerCrumbAnyStateCondition(CrumbState threshold)
+		public PlayerStateFactors(PlayerState threshold)
 		: base(threshold) { }
 		
 		#endregion
@@ -25,14 +25,14 @@ namespace Rules
 		public override bool IsSatisfied
 		{
 			get {			
-				return Value.ContainsAny(Threshold); 
+				return Value.CrumbsContainsAny(Threshold); 
 			}
 		}
 		
 		#endregion
 	}
 	
-	internal class PlayerCrumbAnyStateRule : BaseRule<CrumbState>,GameRule
+	internal class PlayerCrumbAnyStateRule : BaseRule<PlayerState>,GameRule
 	{
 		public string stateResult;
 		
@@ -42,7 +42,7 @@ namespace Rules
 		/// Initializes a new instance of the <see cref="PlayerInventoryStateRule"/> class.
 		/// </summary>
 		/// <param name="threshold">The threshold.</param>
-		public PlayerCrumbAnyStateRule(CrumbState threshold, string stateResult)
+		public PlayerCrumbAnyStateRule(PlayerState threshold, string stateResult)
 			: base(threshold)
 		{
 			this.stateResult = stateResult;
@@ -70,7 +70,7 @@ namespace Rules
 			Conditions.Clear();
 			
 			// Create our conditions
-			var condition1 = new PlayerCrumbAnyStateCondition(Threshold);
+			var condition1 = new PlayerStateFactors(Threshold);
 			
 			// ...and add them to our collection of conditions
 			Conditions.Add(condition1);

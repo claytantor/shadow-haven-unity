@@ -102,7 +102,11 @@ public class PlayerManger : MonoBehaviour {
 		p.Crumbs = pcrumbs;
 		
 		p.SceneNumber = this.sceneNumber;
-		p.LastState = this.lastState;		
+		p.LastState = this.lastState;	
+		
+		p.Anger = this.anger;
+		p.Dispair = this.despair;
+		p.Fear = this.fear;	
 			
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create (Application.persistentDataPath + "/savedPlayers.gd");
@@ -132,12 +136,10 @@ public class PlayerManger : MonoBehaviour {
 			this.inventory_items = CollectionUtils.AsSet(p.Inventory);
 			this.notes = CollectionUtils.AsSet(p.Notes);
 			
-			Debug.Log("p.SceneNumber:"+p.SceneNumber);
 			if(p.SceneNumber == 0)
 				p.SceneNumber = 1;
 			this.sceneNumber = p.SceneNumber;
 			
-			Debug.Log("p.LastState:"+p.LastState);
 			if(p.LastState == null)
 				p.LastState = "SceneStart";
 			this.lastState = p.LastState;

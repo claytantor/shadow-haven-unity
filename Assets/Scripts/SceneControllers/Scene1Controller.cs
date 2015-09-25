@@ -47,7 +47,8 @@ public class Scene1Controller : BaseSceneController {
 		ReadNote0,
 		Door0,
 		Door1,
-		SceneExit0
+		SceneExit0,
+		Break0
 	}
 	
 	IEnumerator SceneStart0 () { return InitState("SceneStart0", State.SceneStart0, this.states); }
@@ -63,7 +64,8 @@ public class Scene1Controller : BaseSceneController {
 	IEnumerator TakeKey0 () { return InitState("TakeKey0", State.TakeKey0, this.states); }
 	IEnumerator Door0 () { return InitState("Door0", State.Door0, this.states); }
 	IEnumerator Door1 () { return InitState("Door1", State.Door1, this.states);	 }
-	IEnumerator SceneExit0 () { return InitState("SceneExit0", State.SceneExit0, this.states); }					
+	IEnumerator SceneExit0 () { return InitState("SceneExit0", State.SceneExit0, this.states); }
+	IEnumerator Break0 () { return InitState("Break0", State.Break0, this.states); }					
 	
 	public override string SetState (string stateBaseName) {
 		string methodName = base.SetState(stateBaseName);

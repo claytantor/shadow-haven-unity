@@ -4,6 +4,27 @@
 	},
 	"rules":[
 		{
+			"type":"PlayerStateFactorsRule",
+			"player":{
+				"sceneNumber":0,
+				"lastState":"SceneStart",
+				"fear":10,
+				"dispair":10,
+				"anger":10,
+				"crumbs":[],
+				"inventory":[],
+				"notes":[]
+			},
+			"baseState":"Door1",
+			"resultState":"Break0"
+		},
+		{
+			"type":"PlayerCrumbAnyStateRule",
+			"state_crumb":["key0"],
+			"baseState":"HiddenBox",
+			"resultState":"HiddenBox1"
+		},
+		{
 			"type":"PlayerCrumbAnyStateRule",
 			"state_crumb":["key0"],
 			"baseState":"HiddenBox",
@@ -360,6 +381,26 @@
 				"despair":0
 			},			
 			"keys":[]	
-		},												
+		},		
+		{
+			"name":"SceneExit0",
+			"description":"You have escaped.",	
+			"factors":{
+				"fear":2,
+				"anger":0,
+				"despair":0
+			},			
+			"keys":[]	
+		},
+		{
+			"name":"Break0",
+			"description":"You have had a mental breakdown.",	
+			"factors":{
+				"fear":1,
+				"anger":1,
+				"despair":1
+			},			
+			"keys":[]	
+		},															
 	]
 }

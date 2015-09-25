@@ -22,7 +22,7 @@ public class BaseSceneController : MonoBehaviour
 	public Text textTitle;		
 	
 	protected KeyDescription[] keys;
-	protected RuleEngine<CrumbState> playerStateRuleEngine = new RuleEngine<CrumbState>();
+	protected RuleEngine<PlayerState> playerStateRuleEngine = new RuleEngine<PlayerState>();
 	
 	protected GameObject playerGameObject;
 	protected string stateDescription;
@@ -34,8 +34,6 @@ public class BaseSceneController : MonoBehaviour
 	protected GameObject textGO;	
 	protected Font arialFont;
 	protected Text textState;	
-	
-	
 	
 	
 	public void Awake() {
@@ -241,7 +239,7 @@ public class BaseSceneController : MonoBehaviour
 		
 		//needed for rues		
 		var crumbStateActual = 
-			new CrumbState(
+			new PlayerState(
 				playerManager.GetCrumbList().ToArray(), stateBaseName);
 		
 		Debug.Log("player has crumbs:"+string.Join(",",playerManager.GetCrumbList().ToArray()));

@@ -1,4 +1,5 @@
 using System;
+using SimpleJSON;
 
 [System.Serializable]
 public class Player
@@ -21,6 +22,27 @@ public class Player
 		this.LastState = "SceneStart";
 		this.SceneNumber = 1;
 	}
+	
+	/*"player":{
+		"sceneNumber":0,
+		"lastState":"SceneStart",
+		"fear":10,
+		"dispair":10,
+		"anger":10,
+		"crumbs":[],
+		"inventory":[],
+		"notes":[]
+	},*/
+//	public Player(JSONNode playerNode){
+//		this.LastState = playerNode["lastState"];
+//		this.SceneNumber = playerNode["sceneNumber"].AsInt;
+//		this.Fear= playerNode["fear"].AsInt; 
+//		this.Anger= playerNode["anger"].AsInt; 
+//		this.Dispair= playerNode["dispair"].AsInt; 
+//		this.Inventory= playerNode["inventory"].AsArray;
+//		this.Crumbs = playerNode["crumbs"].AsArray;
+//		this.Notes = playerNode["notes"].AsArray;		
+//	}
 		
 	public string Id {
 		get {
@@ -115,9 +137,18 @@ public class Player
 	
 	public override string ToString ()
 	{
-		return string.Format ("[Player: Id={0}, Name={1}, Fear={2}, Dispair={3}, Anger={4}, Crumbs={5}, Inventory={6}, Notes={7}, SceneNumber={8}, LastState={9}]", Id, Name, Fear, Dispair, Anger, Crumbs, Inventory, Notes, SceneNumber, LastState);
+		return string.Format ("[Player: Id={0}, Name={1}, Fear={2}, Dispair={3}, Anger={4}, Crumbs={5}, Inventory={6}, Notes={7}, SceneNumber={8}, LastState={9}]", 
+			Id, Name, Fear, Dispair, Anger, Crumbs, Inventory, Notes, SceneNumber, LastState);
 	}	
 	
+//	public JSONNode ToJSON(){
+//		JSONNode playerNode = new JSONNode();
+//		playerNode["fear"] = this.Fear;
+//		playerNode["dispair"] = this.Dispair;
+//		playerNode["anger"] = this.Anger;		
+//		return playerNode;
+//	}
+//	
 	
 }
 

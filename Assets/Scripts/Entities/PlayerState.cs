@@ -2,24 +2,46 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CrumbState {
-	public string[] crumbs;
-	public string baseState;
+/**
+used for rules
+**/
+public class PlayerState {
 	
-	public CrumbState(string[] crumbs, string state){
+	private string[] crumbs;
+	private string[] inventory;
+	private string[] notes;
+	private string baseState;
+	
+	private int fear;
+	private int dispair;
+	private int anger;
+	
+	
+	public PlayerState(string[] crumbs, string state){
 		this.crumbs = crumbs;
 		this.baseState = state;	
 	}
 	
-	
-	public bool ContainsAll(CrumbState _i){
+	public PlayerState(Player p){
+		this.crumbs = p.Crumbs;
+		this.baseState = p.LastState;
 		
+	}
 	
+	public bool FactorsTotalThreshold(PlayerState _i){
+		int totalv = this.Fear+this.Anger+this.Dispair;
+		int _totalv = _i.Fear+_i.Anger+_i.Dispair;
+		
+		if(totalv>_totalv)
+			return true;
+		else
+			return false;
+	}
+	
+	public bool CrumbsContainsAll(PlayerState _i){
+			
 		string[] items = this.crumbs;
-		string[] _items = _i.crumbs;
-//		Debug.Log("items:"+string.Join(",",items));
-//		Debug.Log("_items:"+string.Join(",",_items));
-		
+		string[] _items = _i.Crumbs;
 		
 		if(items.Length != _items.Length){
 			return false;
@@ -47,15 +69,11 @@ public class CrumbState {
 				
 	}
 	
-	public bool ContainsAny(CrumbState _i){
+	public bool CrumbsContainsAny(PlayerState _i){
 	
 		string[] items = this.crumbs;
-		string[] _items = _i.crumbs;
-		
-//		if(items.Length != _items.Length){
-//			return false;
-//		}
-				
+		string[] _items = _i.Crumbs;
+						
 		var lst = new List<string>();		
 		lst.AddRange(_items);
 		int matchcount = 0;
@@ -75,6 +93,49 @@ public class CrumbState {
 			return false;
 		}
 	}
+	
+	
+    string[] Crumbs {
+		get {
+			return this.crumbs;
+		}
+	}
+
+	string[] Inventory {
+		get {
+			return this.inventory;
+		}
+	}
+
+	string[] Notes {
+		get {
+			return this.notes;
+		}
+	}
+
+	string BaseState {
+		get {
+			return this.baseState;
+		}
+	}
+
+	int Fear {
+		get {
+			return this.fear;
+		}
+	}
+
+	int Dispair {
+		get {
+			return this.dispair;
+		}
+	}
+
+	int Anger {
+		get {
+			return this.anger;
+		}
+	}  	
 	
 	
 	
