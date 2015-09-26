@@ -8,6 +8,7 @@ using System.IO;
 using Utils;
 
 public class PlayerManger : MonoBehaviour {
+	
 
 	public GameObject playerGameObject;
 
@@ -27,7 +28,8 @@ public class PlayerManger : MonoBehaviour {
 	public List<Player> savedPlayers = new List<Player>();
 	
 	public string currentPlayerId;
-		
+	
+	
 	void Awake() {
 		DontDestroyOnLoad(playerGameObject);
 	}
@@ -91,15 +93,15 @@ public class PlayerManger : MonoBehaviour {
 		//set values for that player prior to serialization.
 		string[] pinv = new string[this.GetInventoryList().Count];
 		GetInventoryList().CopyTo(pinv);
-		p.Inventory = pinv;
+		p.inventory_items = CollectionUtils.AsSet(pinv);
 		
 		string[] pnotes = new string[GetNoteList().Count];
 		GetNoteList().CopyTo(pnotes);
-		p.Notes = pnotes;
+		p.notes = CollectionUtils.AsSet(pnotes);
 		
 		string[] pcrumbs = new string[GetCrumbList().Count];
 		GetCrumbList().CopyTo(pcrumbs);
-		p.Crumbs = pcrumbs;
+		p.state_crumbs = CollectionUtils.AsSet(pcrumbs);
 		
 		p.SceneNumber = this.sceneNumber;
 		p.LastState = this.lastState;	
@@ -132,9 +134,9 @@ public class PlayerManger : MonoBehaviour {
 		
 		if(p != null){
 			this.currentPlayerId = p.Id;			
-			this.state_crumbs = CollectionUtils.AsSet(p.Crumbs);
-			this.inventory_items = CollectionUtils.AsSet(p.Inventory);
-			this.notes = CollectionUtils.AsSet(p.Notes);
+			this.state_crumbs = p.state_crumbs;
+			this.inventory_items = p.inventory_items;
+			this.notes = p.notes;
 			
 			if(p.SceneNumber == 0)
 				p.SceneNumber = 1;

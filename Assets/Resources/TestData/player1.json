@@ -1,0 +1,10 @@
+"player":{
+    "sceneNumber":0,
+    "lastState":"SceneStart",
+    "fear":10,
+    "dispair":10,
+    "anger":10,
+    "crumbs":[],
+    "inventory":[],
+    "notes":[]
+}

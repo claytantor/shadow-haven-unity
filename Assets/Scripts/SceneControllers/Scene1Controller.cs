@@ -68,6 +68,7 @@ public class Scene1Controller : BaseSceneController {
 	IEnumerator Break0 () { return InitState("Break0", State.Break0, this.states); }					
 	
 	public override string SetState (string stateBaseName) {
+	
 		string methodName = base.SetState(stateBaseName);
 		Debug.Log("Going to state: " + methodName);
 		
@@ -75,7 +76,8 @@ public class Scene1Controller : BaseSceneController {
 			GetType().GetMethod(methodName,
 			                    System.Reflection.BindingFlags.NonPublic |
 			                    System.Reflection.BindingFlags.Instance);
-		StartCoroutine((IEnumerator)info.Invoke(this, null));
+			                    
+		/*StartCoroutine((IEnumerator)info.Invoke(this, null));
 				
 		//must set inventory after state
 		MakeInventory(playerManager.GetInventoryList().ToArray(), inventoryCanvas);
@@ -84,6 +86,7 @@ public class Scene1Controller : BaseSceneController {
 			Application.LoadLevel(2);
 		}	
 		
+		return methodName;*/
 		return methodName;
 	
 	}

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 /**
 used for rules
 **/
+using Utils;
+
+
 public class PlayerState {
 	
 	private string[] crumbs;
@@ -23,7 +26,7 @@ public class PlayerState {
 	}
 	
 	public PlayerState(Player p){
-		this.crumbs = p.Crumbs;
+		this.crumbs = CollectionUtils.AsArray(p.GetCrumbList());
 		this.baseState = p.LastState;
 		
 	}

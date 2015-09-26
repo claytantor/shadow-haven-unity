@@ -267,5 +267,12 @@ public class BaseSceneController : MonoBehaviour
 
 	}
 	
+	//========= properties
+	public JSONArray States {
+		get {
+			return this.states;
+		}
+	}
+	
 }
 
