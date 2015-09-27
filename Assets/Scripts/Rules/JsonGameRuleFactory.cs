@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using RuleEngine.Base;
 using SimpleJSON;
+using Utils;
 
 namespace Rules
 {
@@ -9,8 +10,11 @@ namespace Rules
 		public static BaseRule<PlayerState> make(JSONNode ruleNode){
 		
 			string ruletype = ruleNode["type"];
-			Debug.Log("ruletype:"+ruletype);
+			//Debug.Log("ruletype:"+ruletype);
 			BaseRule<PlayerState> rule = null;
+			
+			ReallySimpleLogger.ReallySimpleLogger.WriteLog(
+				typeof(JsonGameRuleFactory),string.Format("building rule of type:{0}",ruletype));
 			
 			if(ruletype.Equals("PlayerCrumbAllStateRule")){
 				JSONArray crumbJson = ruleNode["state_crumb"].AsArray;
@@ -24,7 +28,9 @@ namespace Rules
 				
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
-				rule = new PlayerCrumbAllStateRule(new PlayerState(iA, baseState), resultState);	
+				Player iAPlayer = new Player();
+				iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
+				rule = new PlayerCrumbAllStateRule(new PlayerState(iAPlayer, baseState), resultState);	
 							
 			} else if(ruletype.Equals("PlayerCrumbAnyStateRule")){
 				JSONArray inventoryJson = ruleNode["state_crumb"].AsArray;
@@ -38,7 +44,11 @@ namespace Rules
 				
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
-				rule = new PlayerCrumbAnyStateRule(new PlayerState(iA, baseState), resultState);				
+				
+				Player iAPlayer = new Player();
+				iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
+				rule = new PlayerCrumbAnyStateRule(new PlayerState(iAPlayer, baseState), resultState);
+				
 			} 
 //			else if(ruletype.Equals("PlayerStateFactorsRule")){
 //				//JSONNode playerNode = ruleNode["player"];

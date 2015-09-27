@@ -238,9 +238,12 @@ public class BaseSceneController : MonoBehaviour
 		playerManager.Save();
 		
 		//needed for rues		
+//		var crumbStateActual = 
+//			new PlayerState(
+//				playerManager.GetCrumbList().ToArray(), stateBaseName);
+
 		var crumbStateActual = 
-			new PlayerState(
-				playerManager.GetCrumbList().ToArray(), stateBaseName);
+			new PlayerState(playerManager.FindPlayerById(playerManager.currentPlayerId), stateBaseName);	
 		
 		Debug.Log("player has crumbs:"+string.Join(",",playerManager.GetCrumbList().ToArray()));
 		

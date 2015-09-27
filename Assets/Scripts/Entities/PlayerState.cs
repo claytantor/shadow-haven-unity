@@ -6,29 +6,18 @@ using System.Collections.Generic;
 used for rules
 **/
 using Utils;
+using System.Linq;
 
 
 public class PlayerState {
 	
-	private string[] crumbs;
-	private string[] inventory;
-	private string[] notes;
+	private Player p;
 	private string baseState;
 	
-	private int fear;
-	private int dispair;
-	private int anger;
 	
-	
-	public PlayerState(string[] crumbs, string state){
-		this.crumbs = crumbs;
-		this.baseState = state;	
-	}
-	
-	public PlayerState(Player p){
-		this.crumbs = CollectionUtils.AsArray(p.GetCrumbList());
-		this.baseState = p.LastState;
-		
+	public PlayerState(Player p, string state){
+		this.p = p;
+		this.baseState = state;
 	}
 	
 	public bool FactorsTotalThreshold(PlayerState _i){
@@ -42,10 +31,31 @@ public class PlayerState {
 	}
 	
 	public bool CrumbsContainsAll(PlayerState _i){
-			
-		string[] items = this.crumbs;
+	
+		string[] items = CollectionUtils.AsArray(p.GetCrumbList());
 		string[] _items = _i.Crumbs;
+				
+		IEnumerable<string> filtered =
+			p.GetCrumbList().Except(_items, new StringComparer());
 		
+		string[] itemsFiltered = CollectionUtils.AsArray(filtered);		
+				
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(
+			this.GetType(),string.Format("filtered items:{0}",string.Join(",",itemsFiltered)));
+			
+		foreach(string toRemove in itemsFiltered){
+			items = items.Where(val => val != toRemove).ToArray();
+		}
+						
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(
+			this.GetType(),string.Format(
+			"comparing player all this crumbs:{0} for state:{1} and rule crumbs:{2} for state:{3}",
+			string.Join(",", items),
+			this.BaseState,
+			string.Join(",", _i.p.GetCrumbList().ToArray()),
+			_i.BaseState			
+			));
+				
 		if(items.Length != _items.Length){
 			return false;
 		}
@@ -74,9 +84,12 @@ public class PlayerState {
 	
 	public bool CrumbsContainsAny(PlayerState _i){
 	
-		string[] items = this.crumbs;
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(
+			this.GetType(),string.Format("comparing player any crumbs:{0}",string.Join(",", this.p.GetCrumbList().ToArray())));
+	
+		string[] items = CollectionUtils.AsArray(p.GetCrumbList());
 		string[] _items = _i.Crumbs;
-						
+								
 		var lst = new List<string>();		
 		lst.AddRange(_items);
 		int matchcount = 0;
@@ -97,22 +110,25 @@ public class PlayerState {
 		}
 	}
 	
+	private string[] FindCommon(string[] iArray, string[] _iArray){
+		return null;
+	}		
 	
     string[] Crumbs {
 		get {
-			return this.crumbs;
+			return CollectionUtils.AsArray(this.p.state_crumbs);
 		}
 	}
 
 	string[] Inventory {
 		get {
-			return this.inventory;
+			return CollectionUtils.AsArray(this.p.inventory_items);
 		}
 	}
 
 	string[] Notes {
 		get {
-			return this.notes;
+			return CollectionUtils.AsArray(this.p.notes);
 		}
 	}
 
@@ -124,22 +140,20 @@ public class PlayerState {
 
 	int Fear {
 		get {
-			return this.fear;
+			return this.p.Fear;
 		}
 	}
 
 	int Dispair {
 		get {
-			return this.dispair;
+			return this.p.Dispair;
 		}
 	}
 
 	int Anger {
 		get {
-			return this.anger;
+			return this.p.Anger;
 		}
 	}  	
-	
-	
 	
 }

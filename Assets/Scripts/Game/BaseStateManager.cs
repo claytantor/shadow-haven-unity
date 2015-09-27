@@ -6,6 +6,7 @@ using System.Collections;
 using Rules;
 using System.Collections.Generic;
 using Utils;
+using ReallySimpleLogger;
 
 public class BaseStateManager 
 {
@@ -20,14 +21,21 @@ public class BaseStateManager
 		
 		player.LastState = stateBaseName;
 		
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(this.GetType(), "state base name:"+stateBaseName);
+		
 		//needed for rues		
 		var crumbStateActual = 
-			new PlayerState(CollectionUtils.AsArray(player.GetCrumbList()), stateBaseName);
-		
+			new PlayerState(player, stateBaseName);
+					
 		playerStateRuleEngine.ActualValue = crumbStateActual;
 		
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(
+			this.GetType(),"player has crumbs:"+string.Join(",", player.GetCrumbList().ToArray()));
+		
 		// Get the result
-		var resultStates = playerStateRuleEngine.Matches();
+		List<RuleEngine.Contracts.IRule<PlayerState>> resultStates = playerStateRuleEngine.Matches();
+		
+		ReallySimpleLogger.ReallySimpleLogger.WriteLog(this.GetType(), "matches found:"+resultStates.Count);
 		
 		//make the default state
 		string methodName = stateBaseName+"0";

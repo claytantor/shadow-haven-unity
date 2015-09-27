@@ -1,13 +1,22 @@
 using UnityEngine;
 using System.Collections;
 using SimpleJSON;
+using Rules;
 
 public class Scene1StateManager : BaseStateManager
 {
 	private State state;
 	
-	public Scene1StateManager(JSONArray states){
-		this.states = states;
+	public Scene1StateManager(JSONNode sceneJson){
+		
+		this.states = sceneJson["states"].AsArray;
+		
+		//load rules
+		var rulesArray = sceneJson["rules"].AsArray;
+		foreach(JSONNode ruleNode in rulesArray){
+			playerStateRuleEngine.Add(JsonGameRuleFactory.make(ruleNode));
+		}	
+				
 	}
 	
 	//the states

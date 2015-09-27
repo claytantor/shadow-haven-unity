@@ -14,7 +14,6 @@ namespace UnityTest
         [Category("Failing Tests")]
         public void ExceptionTest()
         {
-        	Player p = new Player();
             throw new Exception("Exception throwing test");
         }
 
