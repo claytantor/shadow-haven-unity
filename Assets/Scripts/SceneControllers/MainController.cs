@@ -49,10 +49,10 @@ public class MainController : MonoBehaviour {
 		//create a new player
 		Player p = playerManger.CreatePlayer();
 		p.Name = nameText.text;
-		playerManger.currentPlayerId = p.Id;
+		playerManger.currentPlayer.Id = p.Id;
 		playerManger.Save();
 					
-		MakePlayerButton(p.Name, p.Id, playerManger.savedPlayers.ToArray().Length-1);
+		MakePlayerButton(p.Name, p.Id, playerManger.savedPlayers.Count-1);
 		
 	}
 	

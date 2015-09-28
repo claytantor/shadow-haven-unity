@@ -28,8 +28,9 @@ namespace Rules
 				
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
-				Player iAPlayer = new Player();
-				iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
+				
+				//iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
+				Player iAPlayer = new Player(){ State_crumbs = CollectionUtils.AsList(iA) };
 				rule = new PlayerCrumbAllStateRule(new PlayerState(iAPlayer, baseState), resultState);	
 							
 			} else if(ruletype.Equals("PlayerCrumbAnyStateRule")){
@@ -45,8 +46,8 @@ namespace Rules
 				string baseState = ruleNode["baseState"];
 				string resultState = ruleNode["resultState"];
 				
-				Player iAPlayer = new Player();
-				iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
+				Player iAPlayer = new Player(){ State_crumbs = CollectionUtils.AsList(iA) };
+				//iAPlayer.state_crumbs = CollectionUtils.AsSet(iA);
 				rule = new PlayerCrumbAnyStateRule(new PlayerState(iAPlayer, baseState), resultState);
 				
 			} 

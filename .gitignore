@@ -16,3 +16,4 @@ shadow-haven-unity.userprefs
 *.meta
 test-results/
 test-results/*
+*.log

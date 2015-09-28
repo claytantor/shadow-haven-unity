@@ -10,7 +10,7 @@ using Utils;
 
 public class BaseSceneController : MonoBehaviour
 {
-	public TextAsset sceneJson;
+	public TextAsset sceneJSONAsset;
 	
 	public Canvas stateCanvas;	
 	public Canvas stateDescCanvas;
@@ -28,13 +28,14 @@ public class BaseSceneController : MonoBehaviour
 	protected string stateDescription;
 	
 	protected PlayerManger playerManager;
-	protected JSONArray states;	
+	protected JSONNode sceneJSON;	
 	protected Font font;
 	
 	protected GameObject textGO;	
 	protected Font arialFont;
-	protected Text textState;	
+	protected Text textState;
 	
+	public IKeyProvider<List<KeyDescription>> keyProvider;	
 	
 	public void Awake() {
 	
@@ -53,16 +54,9 @@ public class BaseSceneController : MonoBehaviour
 		}	
 		
 		//load the json
-		var dict = JSON.Parse(sceneJson.text);
-		textTitle.text = (string)dict["sceneInfo"]["name"];
-		states = dict["states"].AsArray;
-		
-		//load rules
-		var rulesArray = dict["rules"].AsArray;
-		foreach(JSONNode ruleNode in rulesArray){
-			playerStateRuleEngine.Add(JsonGameRuleFactory.make(ruleNode));
-		}	
-		
+		sceneJSON = JSON.Parse(sceneJSONAsset.text);
+		textTitle.text = (string)sceneJSON["sceneInfo"]["name"];
+				
 		RectTransform objectRectTransform = stateDescCanvas.GetComponent<RectTransform> ();
 		textGO = new GameObject("textnew");
 		textGO.name = "textnew";
@@ -80,7 +74,8 @@ public class BaseSceneController : MonoBehaviour
 		textState.fontSize = 30;
 		
 		//initialize from last state
-		MakeInventory(playerManager.GetInventoryList().ToArray(), inventoryCanvas);
+		Debug.Log("current player:"+playerManager.CurrentPlayer.ToString());
+		MakeInventory(playerManager.CurrentPlayer.GetInventoryList().ToArray(), inventoryCanvas);
 		
 		
 	}
@@ -115,65 +110,39 @@ public class BaseSceneController : MonoBehaviour
 	}
 	
 	
-	public JSONNode FindState(string name, JSONArray states){
-		foreach(JSONNode state in states){
-			string nameval = state["name"];
-			if(nameval.Equals(name)){				
-				return state;
-			} 
-		}
-		return null;
-	}
-	
-	public KeyDescription[] MakeKeyListJson(JSONArray keyArray){
-		int i =0;
-		KeyDescription[] keys = new KeyDescription[keyArray.Count];
-		foreach(JSONNode key in keyArray){
-			//Debug.Log(key);			
-			string keycode = key["keycode"];
-			string description = key["description"];
-			string state = key["state"];
-			string buttonId = key["buttonId"];
-			keys[i] = new KeyDescription(keycode, state, description, buttonId);
-			i+=1;
-		}
-		return keys;		
-	}	
-	
-	public void MakeStateKeyButtons(KeyDescription[] keys, Transform parentTransform){ 
 		
-		//remove child buttons
-		foreach (Transform child in parentTransform) {
-			GameObject.Destroy(child.gameObject);
-		}
-		
-		//make a button for each key and add as child		
-		for(int i = 0; i < keys.Length; i++){
-			int dx = (i*170)-330;
-			GameObject btnBack = Utils.UIExtensions.MakeTextColorButton(
-				keys[i].buttonId, 
-				new Vector2(160,30), 
-				new Vector2(dx, 27), 
-				keys[i].action,
-				font, 18, Color.white,
-				Color.gray,
-				TextAnchor.MiddleCenter,
-				ButtonEvent);
-			
-			btnBack.transform.SetParent(parentTransform, false);
-		}		
-	}
+//	public void MakeStateKeyButtons(KeyDescription[] keys, Transform parentTransform){ 
+//		
+//		//remove child buttons
+//		foreach (Transform child in parentTransform) {
+//			GameObject.Destroy(child.gameObject);
+//		}
+//		
+//		//make a button for each key and add as child		
+//		for(int i = 0; i < keys.Length; i++){
+//			int dx = (i*170)-330;
+//			GameObject btnBack = Utils.UIExtensions.MakeTextColorButton(
+//				keys[i].buttonId, 
+//				new Vector2(160,30), 
+//				new Vector2(dx, 27), 
+//				keys[i].action,
+//				font, 18, Color.white,
+//				Color.gray,
+//				TextAnchor.MiddleCenter,
+//				ButtonEvent);
+//			
+//			btnBack.transform.SetParent(parentTransform, false);
+//		}		
+//	}
 	
-	public void ButtonEvent(string btn_event){
-		
-		for(int i = 0; i < keys.Length; i++)
-		{
-			KeyDescription kd = keys[i];
-			if(btn_event.Equals(kd.buttonId)){
-				this.SetState(kd.state);								
-			}				
-		}
-	}
+//	public void ButtonEvent(string btn_event){
+//		
+//		foreach(KeyDescription kd in this.keyProvider.GetKeys()){
+//			if(btn_event.Equals(kd.buttonId)){
+//				SetState(kd.state);								
+//			}
+//		}
+//	}
 	
 	void InventoryButtonEvent(string item){
 		if(item.Equals("note0") && stateCanvas.gameObject.activeSelf){
@@ -192,88 +161,10 @@ public class BaseSceneController : MonoBehaviour
 		}	
 	}
 	
-	protected virtual JSONNode InitState(string stateName, JSONArray statesModel){
-		JSONNode stateNode = FindState(stateName, statesModel);
-		
-		textState.text = (string)stateNode["description"];
-		
-		keys = MakeKeyListJson(stateNode["keys"].AsArray);
-		MakeStateKeyButtons(keys, stateButtonsCanvas.gameObject.transform);
-		AddCrumbForState(stateNode["state_crumb"]);
-		AddInventoryForState(stateNode["inventory"]);
-		ModifyPlayerState(stateNode["factors"]);
-		return stateNode;			
-	}
-	
-	public void AddCrumbForState(JSONNode stateCrumb){
-		//Debug.Log(stateCrumb.ToString());
-		if(stateCrumb != null){
-			JSONArray itemsL = stateCrumb.AsArray;
-			foreach(JSONNode itemNode in itemsL){
-				//Debug.Log("adding crumb:"+(string)itemNode);
-				playerManager.AddStateCrumb((string)itemNode);
-			}		
-		}
-	}
-	
-	public void AddInventoryForState(JSONNode inventoryItems){
-		if(inventoryItems != null){
-			JSONArray itemsL = inventoryItems.AsArray;
-			foreach(JSONNode itemNode in itemsL){
-				playerManager.AddInventoryItem((string)itemNode);
-			}		
-		}
-	}
-	
-	public void ModifyPlayerState(JSONNode factors){
-		playerManager.anger+=factors["anger"].AsInt;
-		playerManager.despair+=factors["despair"].AsInt;
-		playerManager.fear+=factors["fear"].AsInt;				
-	}		
-	
-	public virtual string SetState (string stateBaseName) {
-		
-		Debug.Log("base state: " + stateBaseName);
-		playerManager.lastState = stateBaseName;
-		playerManager.Save();
-		
-		//needed for rues		
-//		var crumbStateActual = 
-//			new PlayerState(
-//				playerManager.GetCrumbList().ToArray(), stateBaseName);
-
-		var crumbStateActual = 
-			new PlayerState(playerManager.FindPlayerById(playerManager.currentPlayerId), stateBaseName);	
-		
-		Debug.Log("player has crumbs:"+string.Join(",",playerManager.GetCrumbList().ToArray()));
-		
-		
-		playerStateRuleEngine.ActualValue = crumbStateActual;
-		
-		// Get the result
-		var resultStates = playerStateRuleEngine.Matches();
-		
-		//make the default state
-		string methodName = stateBaseName+"0";
-		if(resultStates != null && resultStates.ToArray().Length>0){
-			foreach(GameRule rule in resultStates){
-				methodName = rule.GetState(stateBaseName);		
-			}
-		} 
-		
-		textFactors.text = string.Format("ANGER:{0}  DESPAIR:{1}  FEAR:{2}",
-		                                 			playerManager.anger, 
-		                                 		    playerManager.despair, 
-		                                 			playerManager.fear);
-					
-		return methodName;
-
-	}
-	
 	//========= properties
 	public JSONArray States {
 		get {
-			return this.states;
+			return this.sceneJSON["states"].AsArray;
 		}
 	}
 	

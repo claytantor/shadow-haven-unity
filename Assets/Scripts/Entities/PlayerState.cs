@@ -116,19 +116,19 @@ public class PlayerState {
 	
     string[] Crumbs {
 		get {
-			return CollectionUtils.AsArray(this.p.state_crumbs);
+			return CollectionUtils.AsArray(this.p.GetCrumbList());
 		}
 	}
 
 	string[] Inventory {
 		get {
-			return CollectionUtils.AsArray(this.p.inventory_items);
+			return CollectionUtils.AsArray(this.p.GetInventoryList());
 		}
 	}
 
 	string[] Notes {
 		get {
-			return CollectionUtils.AsArray(this.p.notes);
+			return CollectionUtils.AsArray(this.p.GetNoteList());
 		}
 	}
 

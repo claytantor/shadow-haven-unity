@@ -2,6 +2,7 @@ using System;
 using SimpleJSON;
 using System.Collections.Generic;
 using Utils;
+using System.Runtime.Serialization;
 
 [System.Serializable]
 public class Player
@@ -16,13 +17,14 @@ public class Player
 	private int dispair=0;
 	private int anger=0;
 
-	public HashSet<string> state_crumbs = new HashSet<string>();
-	public HashSet<string> inventory_items = new HashSet<string>();
-	public HashSet<string> notes = new HashSet<string>();
+
+	private List<string> state_crumbs = new List<string>();
+		
+	private List<string> inventory_items = new List<string>();
+	
+	private List<string> notes = new List<string>();
 	
 	public Player(){
-		this.LastState = "SceneStart";
-		this.SceneNumber = 1;
 	}
 	
 //	"player":{
@@ -41,10 +43,31 @@ public class Player
 		this.Fear = playerNode["fear"].AsInt;
 		this.Dispair = playerNode["dispair"].AsInt;
 		this.Anger = playerNode["anger"].AsInt;
-		this.state_crumbs = CollectionUtils.AsSet(JSONUtils.AsStringArray(playerNode["crumbs"].AsArray));
-		this.inventory_items = CollectionUtils.AsSet(JSONUtils.AsStringArray(playerNode["inventory"].AsArray));
-		this.notes = CollectionUtils.AsSet(JSONUtils.AsStringArray(playerNode["notes"].AsArray));		
+		this.state_crumbs = CollectionUtils.AsList(JSONUtils.AsStringArray(playerNode["crumbs"].AsArray));
+		this.inventory_items = CollectionUtils.AsList(JSONUtils.AsStringArray(playerNode["inventory"].AsArray));
+		this.notes = CollectionUtils.AsList(JSONUtils.AsStringArray(playerNode["notes"].AsArray));		
 	}
+	
+//	[OnSerializing]
+//	private void SetValuesOnSerializing(StreamingContext context)
+//	{
+//		//convert to arrays for serialization
+//		a_state_crumbs = CollectionUtils.AsArray(this.state_crumbs);
+//		a_inventory_items = CollectionUtils.AsArray(this.inventory_items);
+//		a_notes = CollectionUtils.AsArray(this.notes);
+//		
+//	}
+	
+//	[OnDeserializing]
+//	private void SetValuesOnDeserializing(StreamingContext context)
+//	{
+//		//convert to arrays for serialization
+//		this.state_crumbs = CollectionUtils.AsSet(this.a_state_crumbs);
+//		this.inventory_items = CollectionUtils.AsSet(this.a_inventory_items);
+//		this.notes = CollectionUtils.AsSet(this.a_notes);
+//		
+//	}
+		
 		
 	public string Id {
 		get {
@@ -122,40 +145,65 @@ public class Player
 	}	
 	
 	public void AddStateCrumb(string item){
-		state_crumbs.Add(item);
+		if(!state_crumbs.Contains(item))
+			state_crumbs.Add(item);
 	}
 	
 	public List<string> GetCrumbList(){
-		List<string> il = new List<string>();
-		foreach(string item in this.state_crumbs){
-			il.Add(item);
-		}
-		return il;
+		return this.state_crumbs;
 	}
 	
 	public void AddInventoryItem(string item){
-		inventory_items.Add(item);
+		if(!inventory_items.Contains(item))
+			inventory_items.Add(item);
 	}
 	
 	public List<string> GetInventoryList(){
-		List<string> il = new List<string>();
-		foreach(string item in this.inventory_items){
-			il.Add(item);
-		}
-		return il;
+		return this.inventory_items;
 	}
 	
 	public void AddNote(string item){
-		notes.Add(item);
+		if(!notes.Contains(item))
+			notes.Add(item);
 	}
 	
 	public List<string> GetNoteList(){
-		List<string> il = new List<string>();
-		foreach(string item in this.notes){
-			il.Add(item);
-		}
-		return il;
+		return this.notes;
 	}
+	
+	public List<string> State_crumbs {
+		get {
+			return this.state_crumbs;
+		}
+		set {
+			state_crumbs = value;
+		}
+	}
+
+	public  List<string> Inventory_items {
+		get {
+			return this.inventory_items;
+		}
+		set {
+			inventory_items = value;
+		}
+	}
+
+	public  List<string> Notes {
+		get {
+			return this.notes;
+		}
+		set {
+			notes = value;
+		}
+	}		
+//	public override string ToString ()
+//	{
+//		return string.Format ("[Player: id={0}, name={1}, sceneNumber={2}, lastState={3}, "+ 
+//			"fear={4}, dispair={5}, anger={6}, a_state_crumbs={7}, a_inventory_items={8}, a_notes={9}]", 
+//			id, name, sceneNumber, lastState, fear, dispair, anger, a_state_crumbs, a_inventory_items, a_notes);
+//	}
+	
 	
 }
 

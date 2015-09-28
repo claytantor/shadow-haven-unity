@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Utils;
 using ReallySimpleLogger;
 
-public class BaseStateManager 
+public class BaseStateManager : IKeyProvider<List<KeyDescription>>
 {
 	protected string stateDescription;
 	protected string factorsStatus;
@@ -17,7 +17,7 @@ public class BaseStateManager
 	protected Player player;
 	protected JSONArray states;
 	
-	public virtual string SetState (string stateBaseName) {
+	public virtual string GetStateForPlayer (string stateBaseName) {
 		
 		player.LastState = stateBaseName;
 		
@@ -117,6 +117,19 @@ public class BaseStateManager
 		player.Fear+=factors["fear"].AsInt;				
 	}
 	
+	public int GetCount(){
+		return this.Keys.Length;
+	}
+	
+	public List<KeyDescription> GetKeys ()
+	{
+		List<KeyDescription> keyList = new List<KeyDescription>();
+		foreach(KeyDescription k in this.Keys){
+			keyList.Add(k);
+		}
+		return keyList;
+	}	
+
 	public Player Player {
 		get {
 			return this.player;
@@ -126,6 +139,17 @@ public class BaseStateManager
 		}
 	}		
 	
+	public string StateDescription {
+		get {
+			return this.stateDescription;
+		}
+	}
+	
+	public KeyDescription[] Keys {
+		get {
+			return this.keys;
+		}
+	}		
 	
 }
 

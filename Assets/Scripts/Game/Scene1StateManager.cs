@@ -63,13 +63,13 @@ public class Scene1StateManager : BaseStateManager
 		}		
 	}
 		
-	public override string SetState (string stateBaseName) {
-		string methodName = base.SetState(stateBaseName);
+	public System.Reflection.MethodInfo SetState (string stateBaseName) {
+		string methodName = base.GetStateForPlayer(stateBaseName);
 		System.Reflection.MethodInfo info =
 			GetType().GetMethod(methodName,
 			                    System.Reflection.BindingFlags.NonPublic |
 			                    System.Reflection.BindingFlags.Instance);
-		return methodName;
+		return info;
 		
 	}	
 	
