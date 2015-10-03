@@ -80,6 +80,10 @@ public class BaseSceneController : MonoBehaviour
 		
 	}
 	
+	protected void MakePlayerFactors(Player p, Text textFactorsArea){
+		textFactorsArea.text = string.Format("Fear={0} Dispair={1} Anger={2}",p.Fear, p.Dispair, p.Anger);
+	}
+	
 	protected void MakeInventory(string[] inventory_items, Canvas inventoryCanvas){
 		RectTransform objectRectTransform = inventoryCanvas.GetComponent<RectTransform> ();
 		
@@ -111,38 +115,6 @@ public class BaseSceneController : MonoBehaviour
 	
 	
 		
-//	public void MakeStateKeyButtons(KeyDescription[] keys, Transform parentTransform){ 
-//		
-//		//remove child buttons
-//		foreach (Transform child in parentTransform) {
-//			GameObject.Destroy(child.gameObject);
-//		}
-//		
-//		//make a button for each key and add as child		
-//		for(int i = 0; i < keys.Length; i++){
-//			int dx = (i*170)-330;
-//			GameObject btnBack = Utils.UIExtensions.MakeTextColorButton(
-//				keys[i].buttonId, 
-//				new Vector2(160,30), 
-//				new Vector2(dx, 27), 
-//				keys[i].action,
-//				font, 18, Color.white,
-//				Color.gray,
-//				TextAnchor.MiddleCenter,
-//				ButtonEvent);
-//			
-//			btnBack.transform.SetParent(parentTransform, false);
-//		}		
-//	}
-	
-//	public void ButtonEvent(string btn_event){
-//		
-//		foreach(KeyDescription kd in this.keyProvider.GetKeys()){
-//			if(btn_event.Equals(kd.buttonId)){
-//				SetState(kd.state);								
-//			}
-//		}
-//	}
 	
 	void InventoryButtonEvent(string item){
 		if(item.Equals("note0") && stateCanvas.gameObject.activeSelf){

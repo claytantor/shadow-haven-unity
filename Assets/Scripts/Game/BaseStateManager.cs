@@ -11,11 +11,12 @@ using ReallySimpleLogger;
 public class BaseStateManager : IKeyProvider<List<KeyDescription>>
 {
 	protected string stateDescription;
-	protected string factorsStatus;
+	//protected string factorsStatus;
 	protected RuleEngine<PlayerState> playerStateRuleEngine = new RuleEngine<PlayerState>();
 	protected KeyDescription[] keys;
 	protected Player player;
 	protected JSONArray states;
+	protected JSONNode stateNode;
 	
 	public virtual string GetStateForPlayer (string stateBaseName) {
 		
@@ -45,25 +46,25 @@ public class BaseStateManager : IKeyProvider<List<KeyDescription>>
 			}
 		} 
 		
-		factorsStatus = string.Format("ANGER:{0}  DESPAIR:{1}  FEAR:{2}",
-		                                 player.Anger, 
-		                                 player.Dispair, 
-		                                 player.Fear);
-		
 		return methodName;
 		
 	}
 		
 
 	protected virtual JSONNode InitState(string stateName){
-		JSONNode stateNode = FindState(stateName, this.states);
+		this.stateNode = FindState(stateName, this.states);
 		
 		this.stateDescription = (string)stateNode["description"];
 		
 		keys = MakeKeyListJson(stateNode["keys"].AsArray);
 		AddCrumbForState(stateNode["state_crumb"]);
 		AddInventoryForState(stateNode["inventory"]);
-		ModifyPlayerState(stateNode["factors"]);
+		if(!player.IsStartup){
+			ModifyPlayerState(stateNode["factors"]);
+		}			
+		else {
+			player.IsStartup = false;
+		}
 		return stateNode;			
 	}
 	
@@ -111,10 +112,10 @@ public class BaseStateManager : IKeyProvider<List<KeyDescription>>
 		}
 	}
 	
-	public void ModifyPlayerState(JSONNode factors){
+	public void ModifyPlayerState(JSONNode factors){		
 		player.Anger+=factors["anger"].AsInt;
 		player.Dispair+=factors["despair"].AsInt;
-		player.Fear+=factors["fear"].AsInt;				
+		player.Fear+=factors["fear"].AsInt;	
 	}
 	
 	public int GetCount(){
@@ -149,7 +150,18 @@ public class BaseStateManager : IKeyProvider<List<KeyDescription>>
 		get {
 			return this.keys;
 		}
-	}		
+	}	
 	
+	public JSONArray States {
+		get {
+			return this.states;
+		}
+	} 		
+		
+	public JSONNode StateNode {
+		get {
+			return this.stateNode;
+		}
+	}
 }
 

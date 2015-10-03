@@ -17,12 +17,12 @@ public class Player
 	private int dispair=0;
 	private int anger=0;
 
-
-	private List<string> state_crumbs = new List<string>();
-		
-	private List<string> inventory_items = new List<string>();
-	
+	private List<string> state_crumbs = new List<string>();		
+	private List<string> inventory_items = new List<string>();	
 	private List<string> notes = new List<string>();
+	
+	
+	[NonSerialized()] private bool isStartup;
 	
 	public Player(){
 	}
@@ -144,6 +144,18 @@ public class Player
 		                      SceneNumber, LastState);
 	}	
 	
+	public void CopyFrom(Player _i){
+		this.state_crumbs = _i.State_crumbs;
+		this.inventory_items = _i.Inventory_items;
+		this.notes = _i.Notes;
+		this.fear = _i.Fear;
+		this.dispair = _i.Dispair;
+		this.anger = _i.Anger;
+		this.lastState = _i.LastState;
+		this.sceneNumber = _i.SceneNumber;
+		
+	}
+	
 	public void AddStateCrumb(string item){
 		if(!state_crumbs.Contains(item))
 			state_crumbs.Add(item);
@@ -196,13 +208,18 @@ public class Player
 		set {
 			notes = value;
 		}
-	}		
-//	public override string ToString ()
-//	{
-//		return string.Format ("[Player: id={0}, name={1}, sceneNumber={2}, lastState={3}, "+ 
-//			"fear={4}, dispair={5}, anger={6}, a_state_crumbs={7}, a_inventory_items={8}, a_notes={9}]", 
-//			id, name, sceneNumber, lastState, fear, dispair, anger, a_state_crumbs, a_inventory_items, a_notes);
-//	}
+	}	
+	
+			
+	public bool IsStartup {
+		get {
+			return this.isStartup;
+		}
+		set {
+			isStartup = value;
+		}
+	}
+	
 	
 	
 }

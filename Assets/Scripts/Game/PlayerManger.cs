@@ -31,11 +31,7 @@ public class PlayerManger : MonoBehaviour {
 	
 	}
 	
-	public void Save() {
-	
-		//get the current player from the list
-		savedPlayers.Add(this.currentPlayer);
-			
+	public void Save() {		
 		BinaryFormatter bf = new BinaryFormatter();
 		FileStream file = File.Create (Application.persistentDataPath + "/savedPlayers.gd");
 		bf.Serialize(file, savedPlayers);
@@ -52,10 +48,17 @@ public class PlayerManger : MonoBehaviour {
 		}
 	}
 	
+	public void AddPlayer(Player p){
+		if(!this.savedPlayers.Contains(p)){
+			this.savedPlayers.Add(p);
+		}
+	}
+	
 
-	public void SetCurrentPlayer(string id){
+	public void SetCurrentPlayer(string id, bool start){
 	
 		Player p = FindPlayerById(id);
+		p.IsStartup = start;
 		
 		if(p != null){
 			this.currentPlayer = p;
@@ -80,7 +83,8 @@ public class PlayerManger : MonoBehaviour {
 		DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
 		double timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
 		p.Id = string.Format("{0}",timestamp.ToString());
-		savedPlayers.Add(p);
+		//savedPlayers.Add(p);
+		this.AddPlayer(p);
 
 		return p;
 		

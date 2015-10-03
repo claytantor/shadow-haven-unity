@@ -24,8 +24,6 @@ namespace Utils
 				list.Add(array[i]);
 			}
 			return list;
-			
-			return list;
 		} 
 		
 		public static string[] AsArray(ICollection<string> collection){

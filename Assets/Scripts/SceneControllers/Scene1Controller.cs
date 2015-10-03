@@ -21,8 +21,14 @@ public class Scene1Controller : BaseSceneController {
 	}
 	
 	void Start () {
-		playerManager.CurrentPlayer.SceneNumber = 1;	 
+		playerManager.CurrentPlayer.SceneNumber = 1;	
 		SetState(playerManager.CurrentPlayer.LastState); 
+		
+//		stateManager.ModifyPlayerState(stateManager.StateNode["factors"], true);
+		
+		MakePlayerFactors(playerManager.CurrentPlayer, this.textFactors);	
+		
+		//playerManager.Save();		
 	}
 	
 	void Update () {
@@ -46,6 +52,8 @@ public class Scene1Controller : BaseSceneController {
 		//must set inventory after state
 		MakeInventory(playerManager.CurrentPlayer.GetInventoryList().ToArray(), inventoryCanvas);
 		
+		MakePlayerFactors(playerManager.CurrentPlayer, this.textFactors);
+		playerManager.Save();
 		
 		if(info.Name.Equals("SceneExit0")){
 			Application.LoadLevel(2);

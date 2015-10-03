@@ -49,7 +49,8 @@ public class MainController : MonoBehaviour {
 		//create a new player
 		Player p = playerManger.CreatePlayer();
 		p.Name = nameText.text;
-		playerManger.currentPlayer.Id = p.Id;
+		Debug.Log(p.ToString());
+		playerManger.AddPlayer(p);
 		playerManger.Save();
 					
 		MakePlayerButton(p.Name, p.Id, playerManger.savedPlayers.Count-1);
@@ -74,7 +75,9 @@ public class MainController : MonoBehaviour {
 	
 	void PlayerStartEvent(string id){
 		Debug.Log("starting game for player with id:"+id);
-		playerManger.SetCurrentPlayer(id);
+		
+		//start the game
+		playerManger.SetCurrentPlayer(id, true);
 	
 		Application.LoadLevel(1);
 	}
